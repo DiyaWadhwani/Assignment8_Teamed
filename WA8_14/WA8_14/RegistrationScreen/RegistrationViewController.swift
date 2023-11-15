@@ -6,12 +6,16 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseAuth
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 class RegistrationViewController: UIViewController {
     
     let registerView = RegistrationView()
     let childProgressView = ProgressSpinnerViewController()
+    var currentUser: FirebaseAuth.User?
+    let database = Firestore.firestore()
     
     override func loadView() {
         view = registerView
