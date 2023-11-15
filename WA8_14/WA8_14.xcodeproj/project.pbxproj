@@ -133,6 +133,7 @@
 				DDF2DACF2B04A9A20098366F /* ProgressIndicator */,
 				DDF2DAE42B04AB2E0098366F /* UserMessagesScreen */,
 				DDF2DADA2B04AA750098366F /* RegistrationScreen */,
+				DDF2DB572B04CAE50098366F /* NewMessageScreen */,
 				DDF2DAB12B04A9050098366F /* AppDelegate.swift */,
 				DDF2DAB32B04A9050098366F /* SceneDelegate.swift */,
 				DDF2DAB72B04A9050098366F /* Main.storyboard */,
@@ -140,9 +141,6 @@
 				DDF2DABC2B04A9070098366F /* LaunchScreen.storyboard */,
 				DDF2DABF2B04A9070098366F /* Info.plist */,
 				DDF2DB042B04AD220098366F /* GoogleService-Info.plist */,
-				DDF2DB502B04BE5F0098366F /* NewMessageView.swift */,
-				DDF2DB522B04BE6C0098366F /* NewMessageViewController.swift */,
-				DDF2DB542B04C2A70098366F /* ChatTableViewCell.swift */,
 			);
 			path = WA8_14;
 			sourceTree = "<group>";
@@ -201,6 +199,24 @@
 				DDF2DADD2B04AAAB0098366F /* MessagesTableViewManager.swift */,
 			);
 			path = UserMessagesScreen;
+			sourceTree = "<group>";
+		};
+		DDF2DB562B04CADB0098366F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DDF2DB502B04BE5F0098366F /* NewMessageView.swift */,
+				DDF2DB542B04C2A70098366F /* ChatTableViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		DDF2DB572B04CAE50098366F /* NewMessageScreen */ = {
+			isa = PBXGroup;
+			children = (
+				DDF2DB562B04CADB0098366F /* Views */,
+				DDF2DB522B04BE6C0098366F /* NewMessageViewController.swift */,
+			);
+			path = NewMessageScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
