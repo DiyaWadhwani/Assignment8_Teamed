@@ -46,6 +46,9 @@
 		DDF2DB4B2B04B1B10098366F /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2DB4A2B04B1B10098366F /* FirebaseAuthCombine-Community */; };
 		DDF2DB4D2B04B1B10098366F /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2DB4C2B04B1B10098366F /* FirebaseCrashlytics */; };
 		DDF2DB4F2B04B1B10098366F /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2DB4E2B04B1B10098366F /* FirebaseDatabase */; };
+		DDF2DB512B04BE5F0098366F /* NewMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2DB502B04BE5F0098366F /* NewMessageView.swift */; };
+		DDF2DB532B04BE6C0098366F /* NewMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2DB522B04BE6C0098366F /* NewMessageViewController.swift */; };
+		DDF2DB552B04C2A70098366F /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2DB542B04C2A70098366F /* ChatTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +73,9 @@
 		DDF2DADF2B04AAB40098366F /* UserMessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMessagesView.swift; sourceTree = "<group>"; };
 		DDF2DAE12B04AACB0098366F /* MessagesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesTableViewCell.swift; sourceTree = "<group>"; };
 		DDF2DB042B04AD220098366F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DDF2DB502B04BE5F0098366F /* NewMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageView.swift; sourceTree = "<group>"; };
+		DDF2DB522B04BE6C0098366F /* NewMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageViewController.swift; sourceTree = "<group>"; };
+		DDF2DB542B04C2A70098366F /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +140,9 @@
 				DDF2DABC2B04A9070098366F /* LaunchScreen.storyboard */,
 				DDF2DABF2B04A9070098366F /* Info.plist */,
 				DDF2DB042B04AD220098366F /* GoogleService-Info.plist */,
+				DDF2DB502B04BE5F0098366F /* NewMessageView.swift */,
+				DDF2DB522B04BE6C0098366F /* NewMessageViewController.swift */,
+				DDF2DB542B04C2A70098366F /* ChatTableViewCell.swift */,
 			);
 			path = WA8_14;
 			sourceTree = "<group>";
@@ -294,12 +303,15 @@
 				DDF2DADC2B04AAA00098366F /* RightBarButtonManager.swift in Sources */,
 				DDF2DADE2B04AAAB0098366F /* MessagesTableViewManager.swift in Sources */,
 				DDF2DAB62B04A9050098366F /* ViewController.swift in Sources */,
+				DDF2DB552B04C2A70098366F /* ChatTableViewCell.swift in Sources */,
 				DDF2DAC82B04A96D0098366F /* Configs.swift in Sources */,
 				DDF2DAD22B04AA000098366F /* RegistrationViewController.swift in Sources */,
+				DDF2DB532B04BE6C0098366F /* NewMessageViewController.swift in Sources */,
 				DDF2DAD62B04AA180098366F /* RegistrationFirebaseManager.swift in Sources */,
 				DDF2DAD42B04AA0C0098366F /* RegistrationView.swift in Sources */,
 				DDF2DAE22B04AACB0098366F /* MessagesTableViewCell.swift in Sources */,
 				DDF2DACC2B04A9840098366F /* ProgessSpinnerDelegate.swift in Sources */,
+				DDF2DB512B04BE5F0098366F /* NewMessageView.swift in Sources */,
 				DDF2DACA2B04A9750098366F /* Message.swift in Sources */,
 				DDF2DAD82B04AA260098366F /* RegistrationProgressIndicatorManager.swift in Sources */,
 				DDF2DAB22B04A9050098366F /* AppDelegate.swift in Sources */,

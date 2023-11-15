@@ -99,6 +99,8 @@ class ViewController: UIViewController {
     
     @objc func createNewMessage() {
         print("user is creating a new message")
+        let newMessageController = NewMessageViewController()
+        navigationController?.pushViewController(newMessageController, animated: true)
     }
 
 
