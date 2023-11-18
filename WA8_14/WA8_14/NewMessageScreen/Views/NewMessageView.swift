@@ -9,8 +9,9 @@ import UIKit
 
 class NewMessageView: UIView {
     
-//    var recipientPicker: UIPickerView!
-    var recipientDropDownTextField: UITextField!
+    var recipientTextField: UITextField!
+    var pickerView: UIPickerView!
+    var recipientDropDownTable: UITableView!
     var contentWrapper: UIScrollView!
     var chatTableView: UITableView!
     var senderBar: UIView!
@@ -22,8 +23,8 @@ class NewMessageView: UIView {
         
         self.backgroundColor = .white
         
-//        setupRecipientPickerView()
-        setupRecipientDropDownTextField()
+        setupRecipientTextField()
+        setupRecipientDropDownTable()
         setupContentWrapper()
         setupChatTableView()
         setupSenderBar()
@@ -33,19 +34,29 @@ class NewMessageView: UIView {
         initConstraints()
     }
     
-//    func setupRecipientPickerView() {
-//        recipientPicker = UIPickerView()
-//    }
-    
-    func setupRecipientDropDownTextField() {
-        recipientDropDownTextField = UITextField()
-        recipientDropDownTextField.placeholder = "To:"
-        recipientDropDownTextField.borderStyle = .roundedRect
-        recipientDropDownTextField.layer.borderWidth = 2
-        recipientDropDownTextField.layer.borderColor = UIColor.lightGray.cgColor
+    func setupRecipientTextField() {
+
+        recipientTextField = UITextField()
+        recipientTextField.placeholder = "Select a contact"
+        recipientTextField.borderStyle = .roundedRect
+        recipientTextField.layer.borderWidth = 2
+        recipientTextField.layer.borderColor = UIColor.lightGray.cgColor
+        recipientTextField.isUserInteractionEnabled = true
         
-        recipientDropDownTextField.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(recipientDropDownTextField)
+        pickerView = UIPickerView()
+        recipientTextField.inputView = pickerView
+        
+        recipientTextField.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(recipientTextField)
+    }
+    
+    func setupRecipientDropDownTable() {
+        recipientDropDownTable = UITableView()
+        recipientDropDownTable.isHidden = true
+        recipientDropDownTable.layer.zPosition = 1
+        
+        recipientDropDownTable.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(recipientDropDownTable)
     }
     
     func setupContentWrapper() {
@@ -76,6 +87,8 @@ class NewMessageView: UIView {
         messageTextField.borderStyle = .roundedRect
         messageTextField.layer.borderWidth = 2
         messageTextField.layer.borderColor = UIColor.lightGray.cgColor
+        messageTextField.isUserInteractionEnabled = true
+        messageTextField.isEnabled = true
         
         messageTextField.translatesAutoresizingMaskIntoConstraints = false
         senderBar.addSubview(messageTextField)
@@ -90,6 +103,9 @@ class NewMessageView: UIView {
         sendButton.contentVerticalAlignment = .fill
         sendButton.imageView?.contentMode = .scaleAspectFit
         sendButton.layer.cornerRadius = 16
+        sendButton.isEnabled = true
+        sendButton.isUserInteractionEnabled = true
+        sendButton.isHidden = false
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         senderBar.addSubview(sendButton)
@@ -99,11 +115,11 @@ class NewMessageView: UIView {
         
         NSLayoutConstraint.activate([
             
-            recipientDropDownTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: -20),
-            recipientDropDownTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            recipientDropDownTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            recipientTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: -20),
+            recipientTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            recipientTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             
-            contentWrapper.topAnchor.constraint(equalTo: recipientDropDownTextField.bottomAnchor, constant: 10),
+            contentWrapper.topAnchor.constraint(equalTo: recipientTextField.bottomAnchor, constant: 10),
             contentWrapper.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             contentWrapper.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             
@@ -120,12 +136,11 @@ class NewMessageView: UIView {
             messageTextField.trailingAnchor.constraint(lessThanOrEqualTo: senderBar.trailingAnchor),
             
             sendButton.topAnchor.constraint(equalTo: senderBar.topAnchor),
-            sendButton.heightAnchor.constraint(equalToConstant: 45),
-            sendButton.widthAnchor.constraint(equalToConstant: 45),
             sendButton.leadingAnchor.constraint(lessThanOrEqualTo: messageTextField.trailingAnchor, constant: 10),
             sendButton.trailingAnchor.constraint(equalTo: senderBar.trailingAnchor),
-            
-            
+            sendButton.bottomAnchor.constraint(equalTo: senderBar.bottomAnchor),
+            sendButton.heightAnchor.constraint(equalToConstant: 45),
+            sendButton.widthAnchor.constraint(equalToConstant: 45),
             
         ])
         

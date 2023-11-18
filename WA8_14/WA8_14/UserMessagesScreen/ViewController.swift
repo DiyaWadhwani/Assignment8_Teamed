@@ -34,11 +34,13 @@ class ViewController: UIViewController {
                 
                 self.messageList.removeAll()
                 self.userMessageView.tableViewMessages.reloadData()
+                self.userMessageView.newMessageFloatingButton.isHidden = true
                 self.setupRightBarButton(isLoggedIn: false)
             }
             else {
                 //signed in
                 print("user signed in")
+                self.fetchUserChatsAtLogin()
                 self.currentUser = user
                 self.userMessageView.messageLabel.text = "Welcome \(user?.displayName ?? "Anonymous")!"
                 self.userMessageView.newMessageFloatingButton.isEnabled = true
@@ -46,30 +48,30 @@ class ViewController: UIViewController {
                 self.setupRightBarButton(isLoggedIn: true)
                 
                 //loadContacts
-//                self.database.collection("users").document((self.currentUser?.email)!).collection("contacts").addSnapshotListener(includeMetadataChanges: false, listener: { querySnapshot, error in
-//                    if let documents = querySnapshot?.documents {
-//                        self.contactList.removeAll()
-//                        for document in documents {
-//                            do {
-//                                let contact = try document.data(as: Contact.self)
-//                                self.contactList.append(contact)
-//                            }
-//                            catch{
-//                                print(error)
-//                            }
-//                        }
-//                    }
-//                    self.contactList.sort(by: {$0.name < $1.name})
-//                    self.homePage.tableViewContacts.reloadData()
-//                })
+                //                self.database.collection("users").document((self.currentUser?.email)!).collection("contacts").addSnapshotListener(includeMetadataChanges: false, listener: { querySnapshot, error in
+                //                    if let documents = querySnapshot?.documents {
+                //                        self.contactList.removeAll()
+                //                        for document in documents {
+                //                            do {
+                //                                let contact = try document.data(as: Contact.self)
+                //                                self.contactList.append(contact)
+                //                            }
+                //                            catch{
+                //                                print(error)
+                //                            }
+                //                        }
+                //                    }
+                //                    self.contactList.sort(by: {$0.name < $1.name})
+                //                    self.homePage.tableViewContacts.reloadData()
+                //                })
             }
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "My contacts"
+        title = "My Chats"
         
         navigationController?.navigationBar.prefersLargeTitles = true
         
@@ -78,7 +80,7 @@ class ViewController: UIViewController {
         userMessageView.tableViewMessages.delegate = self
         userMessageView.tableViewMessages.dataSource = self
         userMessageView.tableViewMessages.separatorStyle = .none
-//        userMessageView.tableViewMessages.register(ContactsTableViewCell.self, forCellReuseIdentifier: Configs.tableViewContactsID)
+        //        userMessageView.tableViewMessages.register(ContactsTableViewCell.self, forCellReuseIdentifier: Configs.tableViewContactsID)
         
         userMessageView.newMessageFloatingButton.addTarget(self, action: #selector(createNewMessage), for: .touchUpInside)
         
@@ -90,18 +92,12 @@ class ViewController: UIViewController {
         Auth.auth().removeStateDidChangeListener(handleAuth!)
     }
     
-//    @objc func addNewContact() {
-//
-//        let addContactController = AddContactViewController()
-//        addContactController.currentUser = self.currentUser
-//        navigationController?.pushViewController(addContactController, animated: true)
-//    }
-    
     @objc func createNewMessage() {
-        print("user is creating a new message")
-        let newMessageController = NewMessageViewController()
-        navigationController?.pushViewController(newMessageController, animated: true)
+            print("user is creating a new message")
+            let newMessageController = NewMessageViewController()
+            newMessageController.currentUser = self.currentUser!
+            navigationController?.pushViewController(newMessageController, animated: true)
     }
-
-
+    
+    
 }

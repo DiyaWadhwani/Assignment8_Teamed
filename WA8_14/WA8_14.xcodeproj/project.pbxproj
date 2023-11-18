@@ -53,6 +53,8 @@
 		DDF2DB5C2B04CDBC0098366F /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2DB5B2B04CDBC0098366F /* FirebaseFirestoreSwift */; };
 		DDF2DB5E2B04CE3E0098366F /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2DB5D2B04CE3E0098366F /* Chat.swift */; };
 		DDF2DB602B04D2070098366F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2DB5F2B04D2070098366F /* FirebaseFirestore */; };
+		DDF2DB622B071BA20098366F /* LoginFirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2DB612B071BA10098366F /* LoginFirebaseManager.swift */; };
+		DDF2DB642B07832D0098366F /* NewMessageFirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2DB632B07832D0098366F /* NewMessageFirebaseManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +84,8 @@
 		DDF2DB542B04C2A70098366F /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		DDF2DB582B04CBB60098366F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DDF2DB5D2B04CE3E0098366F /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
+		DDF2DB612B071BA10098366F /* LoginFirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFirebaseManager.swift; sourceTree = "<group>"; };
+		DDF2DB632B07832D0098366F /* NewMessageFirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageFirebaseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +212,7 @@
 				DDF2DAB52B04A9050098366F /* ViewController.swift */,
 				DDF2DADB2B04AAA00098366F /* RightBarButtonManager.swift */,
 				DDF2DADD2B04AAAB0098366F /* MessagesTableViewManager.swift */,
+				DDF2DB612B071BA10098366F /* LoginFirebaseManager.swift */,
 			);
 			path = UserMessagesScreen;
 			sourceTree = "<group>";
@@ -226,6 +231,7 @@
 			children = (
 				DDF2DB562B04CADB0098366F /* Views */,
 				DDF2DB522B04BE6C0098366F /* NewMessageViewController.swift */,
+				DDF2DB632B07832D0098366F /* NewMessageFirebaseManager.swift */,
 			);
 			path = NewMessageScreen;
 			sourceTree = "<group>";
@@ -345,10 +351,12 @@
 				DDF2DAD22B04AA000098366F /* RegistrationViewController.swift in Sources */,
 				DDF2DB532B04BE6C0098366F /* NewMessageViewController.swift in Sources */,
 				DDF2DAD62B04AA180098366F /* RegistrationFirebaseManager.swift in Sources */,
+				DDF2DB642B07832D0098366F /* NewMessageFirebaseManager.swift in Sources */,
 				DDF2DAD42B04AA0C0098366F /* RegistrationView.swift in Sources */,
 				DDF2DAE22B04AACB0098366F /* MessagesTableViewCell.swift in Sources */,
 				DDF2DACC2B04A9840098366F /* ProgessSpinnerDelegate.swift in Sources */,
 				DDF2DB512B04BE5F0098366F /* NewMessageView.swift in Sources */,
+				DDF2DB622B071BA20098366F /* LoginFirebaseManager.swift in Sources */,
 				DDF2DACA2B04A9750098366F /* Message.swift in Sources */,
 				DDF2DAD82B04AA260098366F /* RegistrationProgressIndicatorManager.swift in Sources */,
 				DDF2DAB22B04A9050098366F /* AppDelegate.swift in Sources */,

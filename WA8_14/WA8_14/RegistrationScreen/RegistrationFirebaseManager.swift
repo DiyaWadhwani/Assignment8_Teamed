@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import FirebaseAuth
+import CryptoKit
 
 extension RegistrationViewController {
     
@@ -52,35 +53,67 @@ extension RegistrationViewController {
     }
     
     func createFirestoreUserDocument() {
+        
         var userCollectionCount = -1
-        if let userEmail = currentUser!.email {
-            let data = ["name":currentUser!.displayName, "email":userEmail]
+        
+        if let userEmail = currentUser?.email {
+            let data = ["name": currentUser?.displayName ?? "", "email": userEmail]
+            
             let userCollection = database.collection("users")
-            userCollection.document(userEmail).setData(data) { (error) in
-                if error == nil {
+            
+//            let chatCollection = database.collection("chats")
+            
+            userCollection.document(userEmail).setData(data) { error in
+                if let error = error {
+                    print("Error creating userCollection: \(error.localizedDescription)")
+                } else {
                     print("userCollection created successfully")
-                }
-                else{
-                    print(error)
+                    
+                    // Fetch userCollectionCount after creating the "users" collection
+                    userCollection.getDocuments { (querySnapshot, error) in
+                        if let error = error {
+                            print("Error fetching userCollection documents: \(error.localizedDescription)")
+                        } else {
+                            userCollectionCount = querySnapshot?.documents.count ?? 0
+                            print("No. of documents in users collection: \(userCollectionCount)")
+                            
+                            // Check if userCollectionCount > 1 and proceed
+                            if userCollectionCount > 1 {
+                                // Continue with the logic for the "chats" collection
+                                var userEmailList = querySnapshot?.documents.compactMap { document in
+                                    document.data()["email"] as? String
+                                } ?? []
+                                print(userEmailList)
+                                
+//                                if let currentUserEmail = self.currentUser?.email {
+//                                    //                                    userEmailList.removeAll { $0 == currentUserEmail }
+//                                    //                                }
+//                                    
+//                                    //                                print("Email List after removing logged in user: \(userEmailList)")
+//                                    
+//                                    // Now explicitly create the "chats" collection
+//                                    if(userEmailList.isEmpty){
+//                                        chatCollection.document(currentUser)
+//                                    }
+//                                    else{
+//                                        for email in userEmailList {
+//                                            chatCollection.document(email).setData(["email": email])
+//                                        }
+//                                    }
+//                                }
+                            }
+                        }
+                    }
                 }
             }
             
-            userCollection.getDocuments(completion: { (querySnapshot, error) in
-                if error == nil {
-                    userCollectionCount = querySnapshot?.documents.count ?? 0
-                    print("No. of documents in users collection: \(userCollectionCount)")
-                }
-            })
             hideActivityIndicator()
             self.navigationController?.popViewController(animated: true)
-            
-            //                let chatCollection = database.collection("users").document(userEmail).collection("chats")
-            //                for i in 1...5 {
-            //                        let chatReference = database.collection("chats").document("chat\(i)")
-            //                        chatCollection.document("chat\(i)").setData(["chatRef": chatReference])
-            //                    }
-            
         }
+    }
+    
+    func createChatCollectionForUser(_ emailList: [String]) {
+        print("creating chat collection for user email \(self.currentUser!.email) with emails \(emailList)")
     }
     
     func showErrorAlert(message: String) {
