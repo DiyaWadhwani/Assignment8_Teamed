@@ -14,6 +14,7 @@ class NewMessageViewController: UIViewController {
     let newMessageView = NewMessageView()
     var userList: [User] = []
     var userNames = [String]()
+    var messageList: [(timeStamp: String, messageText: String)] = []
     let database = Firestore.firestore()
     var didSelectName: ((String) -> Void)?
     var currentUser: FirebaseAuth.User?
@@ -31,8 +32,12 @@ class NewMessageViewController: UIViewController {
         newMessageView.pickerView.delegate = self
         newMessageView.pickerView.dataSource = self
         
-        newMessageView.recipientTextField.addTarget(self, action: #selector(showDropDown), for: .touchDown)
+        newMessageView.recipientTextField.addTarget(self, action: #selector(showDropDown), for: .touchUpInside)
         newMessageView.sendButton.addTarget(self, action: #selector(sendMessageToContact), for: .touchUpInside)
+        
+        newMessageView.chatTableView.delegate = self
+        newMessageView.chatTableView.dataSource = self
+        newMessageView.chatTableView.isHidden = false
         
         setupTapGestureRecognizer()
         fetchUsersFromFirebase()
@@ -45,8 +50,9 @@ class NewMessageViewController: UIViewController {
             if !uwMessage.isEmpty{
                 if let uwContact = newMessageView.recipientTextField.text {
                     if !uwContact.isEmpty {
-                        sendChatToUser(uwContact, uwMessage)
+                        var chatUUID = sendChatToUser(uwContact, uwMessage)
                         //load table view and clear the message text field
+                        //loadChatsOnUserViewScreen(chatUUID)
                     }
                 }
             }
@@ -68,29 +74,6 @@ class NewMessageViewController: UIViewController {
     @objc func showDropDown() {
         newMessageView.recipientDropDownTable.isHidden = !newMessageView.recipientDropDownTable.isHidden
     }
-}
-
-extension NewMessageViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return userNames.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = userNames[indexPath.row]
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedName = userNames[indexPath.row]
-        newMessageView.recipientTextField.text = selectedName
-        newMessageView.recipientDropDownTable.isHidden = true
-        
-        // Callback for handling the selected option
-        didSelectName?(selectedName)
-    }
-    
 }
 
 extension NewMessageViewController: UIPickerViewDelegate, UIPickerViewDataSource {

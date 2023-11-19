@@ -55,6 +55,7 @@
 		DDF2DB602B04D2070098366F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DDF2DB5F2B04D2070098366F /* FirebaseFirestore */; };
 		DDF2DB622B071BA20098366F /* LoginFirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2DB612B071BA10098366F /* LoginFirebaseManager.swift */; };
 		DDF2DB642B07832D0098366F /* NewMessageFirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2DB632B07832D0098366F /* NewMessageFirebaseManager.swift */; };
+		DDF2DB662B0A31A30098366F /* NewMessageTableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF2DB652B0A31A30098366F /* NewMessageTableManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +87,7 @@
 		DDF2DB5D2B04CE3E0098366F /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		DDF2DB612B071BA10098366F /* LoginFirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFirebaseManager.swift; sourceTree = "<group>"; };
 		DDF2DB632B07832D0098366F /* NewMessageFirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageFirebaseManager.swift; sourceTree = "<group>"; };
+		DDF2DB652B0A31A30098366F /* NewMessageTableManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageTableManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +234,7 @@
 				DDF2DB562B04CADB0098366F /* Views */,
 				DDF2DB522B04BE6C0098366F /* NewMessageViewController.swift */,
 				DDF2DB632B07832D0098366F /* NewMessageFirebaseManager.swift */,
+				DDF2DB652B0A31A30098366F /* NewMessageTableManager.swift */,
 			);
 			path = NewMessageScreen;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				DDF2DAD42B04AA0C0098366F /* RegistrationView.swift in Sources */,
 				DDF2DAE22B04AACB0098366F /* MessagesTableViewCell.swift in Sources */,
 				DDF2DACC2B04A9840098366F /* ProgessSpinnerDelegate.swift in Sources */,
+				DDF2DB662B0A31A30098366F /* NewMessageTableManager.swift in Sources */,
 				DDF2DB512B04BE5F0098366F /* NewMessageView.swift in Sources */,
 				DDF2DB622B071BA20098366F /* LoginFirebaseManager.swift in Sources */,
 				DDF2DACA2B04A9750098366F /* Message.swift in Sources */,

@@ -68,7 +68,6 @@ class UserMessagesView: UIView {
     
     func setupTableViewMessages() {
         tableViewMessages = UITableView()
-//        tableViewMessages.register(MessagesTableViewCell.self, forCellReuseIdentifier: "messages")
         
         tableViewMessages.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(tableViewMessages)

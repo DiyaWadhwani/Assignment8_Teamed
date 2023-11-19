@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 
 class ViewController: UIViewController {
     
@@ -16,7 +17,7 @@ class ViewController: UIViewController {
     var handleAuth: AuthStateDidChangeListenerHandle?
     var currentUser: FirebaseAuth.User?
     
-//    let database = Firestore.firestore()
+    let database = Firestore.firestore()
     
     override func loadView() {
         view = userMessageView
@@ -40,8 +41,8 @@ class ViewController: UIViewController {
             else {
                 //signed in
                 print("user signed in")
-                self.fetchUserChatsAtLogin()
                 self.currentUser = user
+                self.fetchUserChatsAtLogin()
                 self.userMessageView.messageLabel.text = "Welcome \(user?.displayName ?? "Anonymous")!"
                 self.userMessageView.newMessageFloatingButton.isEnabled = true
                 self.userMessageView.newMessageFloatingButton.isHidden = false
@@ -80,7 +81,7 @@ class ViewController: UIViewController {
         userMessageView.tableViewMessages.delegate = self
         userMessageView.tableViewMessages.dataSource = self
         userMessageView.tableViewMessages.separatorStyle = .none
-        //        userMessageView.tableViewMessages.register(ContactsTableViewCell.self, forCellReuseIdentifier: Configs.tableViewContactsID)
+        userMessageView.tableViewMessages.register(MessagesTableViewCell.self, forCellReuseIdentifier: Configs.tableViewMessages)
         
         userMessageView.newMessageFloatingButton.addTarget(self, action: #selector(createNewMessage), for: .touchUpInside)
         

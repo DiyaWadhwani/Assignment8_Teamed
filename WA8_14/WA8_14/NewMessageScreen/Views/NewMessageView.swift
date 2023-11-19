@@ -68,8 +68,8 @@ class NewMessageView: UIView {
     
     func setupChatTableView() {
         chatTableView = UITableView()
-        chatTableView.register(ChatTableViewCell.self, forCellReuseIdentifier: "chats")
-        
+        chatTableView.register(ChatTableViewCell.self, forCellReuseIdentifier: Configs.tableViewChats)
+
         chatTableView.translatesAutoresizingMaskIntoConstraints = false
         contentWrapper.addSubview(chatTableView)
     }
