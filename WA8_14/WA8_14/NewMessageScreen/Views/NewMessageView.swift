@@ -17,15 +17,15 @@ class NewMessageView: UIView {
     var senderBar: UIView!
     var messageTextField: UITextField!
     var sendButton: UIButton!
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .white
+        self.backgroundColor = .orange
         
         setupRecipientTextField()
         setupRecipientDropDownTable()
-        setupContentWrapper()
+//        setupContentWrapper()
         setupChatTableView()
         setupSenderBar()
         setupMessageTextField()
@@ -35,7 +35,7 @@ class NewMessageView: UIView {
     }
     
     func setupRecipientTextField() {
-
+        
         recipientTextField = UITextField()
         recipientTextField.placeholder = "Select a contact"
         recipientTextField.borderStyle = .roundedRect
@@ -59,19 +59,13 @@ class NewMessageView: UIView {
         self.addSubview(recipientDropDownTable)
     }
     
-    func setupContentWrapper() {
-        contentWrapper = UIScrollView()
-        
-        contentWrapper.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(contentWrapper)
-    }
-    
     func setupChatTableView() {
         chatTableView = UITableView()
+        chatTableView.backgroundColor = .yellow
         chatTableView.register(ChatTableViewCell.self, forCellReuseIdentifier: Configs.tableViewChats)
-
+        
         chatTableView.translatesAutoresizingMaskIntoConstraints = false
-        contentWrapper.addSubview(chatTableView)
+        self.addSubview(chatTableView)
     }
     
     func setupSenderBar() {
@@ -118,14 +112,11 @@ class NewMessageView: UIView {
             recipientTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: -20),
             recipientTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             recipientTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            
-            contentWrapper.topAnchor.constraint(equalTo: recipientTextField.bottomAnchor, constant: 10),
-            contentWrapper.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            contentWrapper.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            
-            chatTableView.topAnchor.constraint(equalTo: contentWrapper.topAnchor),
-            chatTableView.leadingAnchor.constraint(equalTo: contentWrapper.leadingAnchor),
-            chatTableView.trailingAnchor.constraint(equalTo: contentWrapper.trailingAnchor),
+
+            chatTableView.topAnchor.constraint(equalTo: recipientTextField.bottomAnchor, constant: 10),
+            chatTableView.bottomAnchor.constraint(equalTo: senderBar.topAnchor, constant: -8),
+            chatTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            chatTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
             senderBar.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -60),
             senderBar.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
@@ -150,5 +141,5 @@ class NewMessageView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
 }

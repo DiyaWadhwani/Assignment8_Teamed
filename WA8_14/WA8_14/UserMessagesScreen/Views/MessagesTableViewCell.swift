@@ -71,7 +71,7 @@ class MessagesTableViewCell: UITableViewCell {
             messageTextLabel.heightAnchor.constraint(equalToConstant: 16),
             messageTextLabel.widthAnchor.constraint(lessThanOrEqualTo: senderNameLabel.widthAnchor),
             
-            wrapperCellView.heightAnchor.constraint(equalToConstant: 78),
+            wrapperCellView.heightAnchor.constraint(equalToConstant: 75),
         
         ])
         

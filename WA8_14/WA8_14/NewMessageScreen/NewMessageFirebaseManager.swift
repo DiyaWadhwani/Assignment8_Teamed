@@ -22,14 +22,14 @@ extension NewMessageViewController {
                 let users = querySnapshot?.documents.compactMap { document in
                     try? document.data(as: User.self)
                 } ?? []
-                print("All users fetched -- \(users)")
+                //                print("All users fetched -- \(users)")
                 self.userList = users
                 
                 if let currentUserDisplayName = self.currentUser?.displayName {
                     self.userList = self.userList.filter { $0.name != currentUserDisplayName }
                 }
                 
-                print("UserList after removing the logged in user -- \(self.userList)")
+                //                print("UserList after removing the logged in user -- \(self.userList)")
                 
                 for user in self.userList {
                     self.userNames.append(user.name)
@@ -40,7 +40,7 @@ extension NewMessageViewController {
         }
     }
     
-    func sendChatToUser(_ user: String, _ message: String) -> String{
+    func sendChatToUser(_ toUsername: String, _ message: String){
         
         print("sending chat to user")
         let currentDate = Date()
@@ -58,7 +58,7 @@ extension NewMessageViewController {
         if let fromUser = self.currentUser {
             if let email1 = fromUser.email {
                 for contact in userList {
-                    if user == contact.name {
+                    if toUsername == contact.name {
                         var email2 = contact.email
                         
                         var emailList = [String]()
@@ -67,13 +67,7 @@ extension NewMessageViewController {
                         
                         chatUUID = generateUUID(emailList)
                         
-                        var messageData = [
-                            "user1": email1,
-                            "user2": email2,
-                            "recipient": user,
-                            "message": message,
-                            "timestamp": dateString
-                        ]
+                        var chatObject = Chat(timestamp: dateString, message: message, toUser: email2, fromUser: email1)
                         
                         let messageCollection = chatCollection.document(chatUUID).collection("messages")
                         var messageCollectionCount: Int = 0
@@ -86,13 +80,16 @@ extension NewMessageViewController {
                                 print("No. of documents in messages collection: \(messageCollectionCount)")
                                 
                                 let newMessageDocName = "message\(messageCollectionCount)"
-                                messageCollection.document(newMessageDocName).setData(messageData) { error in
+                                messageCollection.document(newMessageDocName).setData(chatObject.asDictionary) { error in
                                     if let error = error {
                                         print("Failed to create new message document: \(error.localizedDescription.description)")
                                     }
                                     else {
                                         print("New document added succesfully")
-                                        self.addChatReferenceIDToUsers(chatUUID, emailList)
+                                        var usersInConversation = [String]()
+                                        usersInConversation.append(fromUser.displayName!)
+                                        usersInConversation.append(toUsername)
+                                        self.addChatReferenceIDToUsers(chatUUID, emailList, usersInConversation)
                                     }
                                 }
                             }
@@ -101,10 +98,9 @@ extension NewMessageViewController {
                 }
             }
         }
-        return chatUUID
     }
     
-    func addChatReferenceIDToUsers(_ chatUUID: String, _ emails: [String]) {
+    func addChatReferenceIDToUsers(_ chatUUID: String, _ emails: [String], _ usersInConversation: [String]) {
         
         let userCollection = database.collection("users")
         var user1Collection = userCollection.document(emails[0])
@@ -120,7 +116,7 @@ extension NewMessageViewController {
                     print("User1 has the 'chats' collection with 'chatRef' document.")
                 } else {
                     print("User1 does not have the 'chats' collection with 'chatRef' document.")
-                    self.addChatRefDocument(to: user1Collection.collection("chats"), chatUUID, emails[1])
+                    self.addChatRefDocument(to: user1Collection.collection("chats"), chatUUID, emails[1], usersInConversation[1])
                 }
             }
         }
@@ -135,16 +131,17 @@ extension NewMessageViewController {
                     print("User2 has the 'chats' collection with 'chatRef' document.")
                 } else {
                     print("User2 does not have the 'chats' collection with 'chatRef' document.")
-                    self.addChatRefDocument(to: user2Collection.collection("chats"), chatUUID, emails[0])
+                    self.addChatRefDocument(to: user2Collection.collection("chats"), chatUUID, emails[0], usersInConversation[0])
                 }
             }
         }
     }
     
-    func addChatRefDocument(to chatCollection: CollectionReference, _ chatUUID: String, _ email: String) {
+    func addChatRefDocument(to chatCollection: CollectionReference, _ chatUUID: String, _ email: String, _ userName: String) {
         let chatRefDocumentData = [
             // Add any fields you want in the "chatRef" document
-            "toUser": email,
+            "userNameInConversation": userName,
+            "userEmailInConversation": email
         ]
         
         // Add the "chatRef" document to the "chats" collection
@@ -154,43 +151,94 @@ extension NewMessageViewController {
                 print("Error adding 'chatRef' document: \(error.localizedDescription)")
             } else {
                 print("Added 'chatRef' document successfully.")
-                self.loadChatsOnUserViewScreen(chatUUID)
+                self.newMessageView.recipientTextField.isEnabled = false
+                self.newMessageView.recipientDropDownTable.isHidden = true
+                self.newMessageView.messageTextField.text = ""
             }
         }
     }
     
     func loadChatsOnUserViewScreen(_ chatUUID: String) {
-        newMessageView.messageTextField.text = ""
-        self.messageList.removeAll()
         
-//        print("Loading chats for chatID \(chatUUID)")
+        
+        print("CurrentChatList -- \(self.chatList)")
+        
+        var hasNewMessage = false
         
         let chatsCollection = database.collection("chats")
         let messageCollection = chatsCollection.document(chatUUID).collection("messages")
-//        print("chatscollection -- \(chatsCollection)")
-//        print("messagecollection -- \(messageCollection)")
         
-        //implement table view for chats
-        messageCollection.getDocuments { (querySnapshot, error) in
+        var query = messageCollection.order(by: "timestamp", descending: false)
+        
+        if let lastSnapshot = lastDocumentSnapshot {
+            query = query.start(afterDocument: lastSnapshot)
+        }
+        
+        query.addSnapshotListener(includeMetadataChanges: false, listener: { (querySnapshot, error) in
             
             if error == nil {
-//                print("fetched documents in messagecollection")
-                for doc in querySnapshot!.documents {
-                    let data = doc.data()
-//                    print("data in doc -- \(data)")
-                    if let timestamp = data["timestamp"] as? String,
-                       let messageText = data["message"] as? String {
-                        let message = (timeStamp: timestamp, messageText: messageText)
-//                        print("Message recieved -- \(message)")
-                        self.messageList.append(message)
+                if let querySnapshot = querySnapshot{
+                    print("fetched documents in messagecollection")
+                    
+                    for doc in querySnapshot.documents {
+                        
+                        let data = doc.data()
+                        print("data in doc -- \(data)")
+                        if let timestamp = data["timestamp"] as? String,
+                           let messageText = data["message"] as? String,
+                           let fromUser = data["fromUser"] as? String,
+                           let toUser = data["toUser"] as? String {
+                            
+                            let chat = Chat(timestamp: timestamp, message: messageText, toUser: toUser, fromUser: fromUser)
+                            
+                            print("Message recieved -- \(chat)")
+                            
+                            if self.chatList.firstIndex(where: { $0.timestamp == chat.timestamp && $0.message == chat.message && $0.toUser == chat.toUser && $0.fromUser == chat.fromUser }) == nil {
+                                self.chatList.append(chat)
+                                hasNewMessage = true
+                            }
+                            
+                            //                            print("CurrentChatList -- \(self.chatList)")
+                        }
+                        else{
+                            print("Failed to fetch data from doc")
+                        }
+                        
+                        //                    dispatchGroup.leave()
+                        //                    processedDocs += 1
+                    }
+                    
+                    if let lastDocument = querySnapshot.documents.last {
+                        self.lastDocumentSnapshot = lastDocument
+                    }
+                    
+                    if hasNewMessage {
+                        //                dispatchGroup.notify(queue: .main){
+                        DispatchQueue.main.async {
+                            //                    self.newMessageView.layoutIfNeeded()
+                            //                        self.newMessageView.chatTableView.reloadData()
+                            
+                            print("All documents processed. Reloading table view now")
+                            self.newMessageView.chatTableView.reloadData()
+                            self.scrollToBottomChat()
+                        }
                     }
                 }
+                else {
+                    print("Failed to fetch messages")
+                }
+                print("MessageList after adding a message -- \(self.chatList)")
             }
-            else {
-                print("Failed to fetch messages")
-            }
-            print("MessageList after adding a message -- \(self.messageList)")
-            self.newMessageView.chatTableView.reloadData()
+        })
+    }
+    
+    func scrollToBottomChat() {
+        let numberOfSections = newMessageView.chatTableView.numberOfSections
+        let numberOfRows = newMessageView.chatTableView.numberOfRows(inSection: numberOfSections - 1)
+        
+        if numberOfRows > 0 {
+            let indexPath = IndexPath(row: numberOfRows - 1, section: numberOfSections - 1)
+            newMessageView.chatTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
     }
     

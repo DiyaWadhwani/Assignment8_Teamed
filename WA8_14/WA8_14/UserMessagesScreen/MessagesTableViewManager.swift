@@ -20,10 +20,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: Configs.tableViewMessages, for: indexPath) as! MessagesTableViewCell
         
         cell.senderNameLabel.text = messageList[indexPath.row].senderName
-        print("cell senderName -- \(cell.senderNameLabel.text)")
+        print("cell senderName -- \(cell.senderNameLabel.text!)")
         cell.messageTextLabel.text = messageList[indexPath.row].messageText
-        print("cell message -- \(cell.messageTextLabel.text)")
-        
+        print("cell message -- \(cell.messageTextLabel.text!)")
+        print("chatUUID -- \(messageList[indexPath.row].chatUUID)")
         return cell
     }
     
@@ -31,6 +31,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let newMessageController = NewMessageViewController()
         newMessageController.newMessageView.recipientTextField.text = messageList[indexPath.row].senderName
         newMessageController.currentUser = self.currentUser!
+        print("loading chat with uuid: \(messageList[indexPath.row].chatUUID)")
+        newMessageController.loadChatsOnUserViewScreen(messageList[indexPath.row].chatUUID)
         navigationController?.pushViewController(newMessageController, animated: true)
     }
     

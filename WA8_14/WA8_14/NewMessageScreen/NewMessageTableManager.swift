@@ -16,29 +16,31 @@ extension NewMessageViewController: UITableViewDelegate, UITableViewDataSource {
             return userNames.count
         }
         else if tableView == newMessageView.chatTableView {
-            print("MessageListCount = \(messageList.count)")
-            return messageList.count
+            print("ChatCount = \(chatList.count)")
+            return chatList.count
         }
         return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("YOOOOOOO")
+//        print("YOOOOOOO")
         if tableView == newMessageView.recipientDropDownTable {
             print("trying to load table")
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
             cell.textLabel?.text = userNames[indexPath.row]
             return cell
         }
-         if tableView == newMessageView.chatTableView {
+        if tableView == newMessageView.chatTableView {
             print("trying to load table")
             let cell = tableView.dequeueReusableCell(withIdentifier: Configs.tableViewChats, for: indexPath) as! ChatTableViewCell
-            let message = messageList[indexPath.row]
-            cell.timeLabel.text = message.timeStamp
-            cell.messageTextLabel.text = message.messageText
+            let chat = chatList[indexPath.row]
+            let isCurrentUser = chat.fromUser == chatList[indexPath.row].fromUser // Replace with the actual user ID
+            cell.alignChats(with: chat, isCurrentUser: isCurrentUser)
+            cell.timeLabel.text = chat.timestamp
+            cell.messageTextLabel.text = chat.message
             return cell
         }
-            return UITableViewCell()
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -52,7 +54,7 @@ extension NewMessageViewController: UITableViewDelegate, UITableViewDataSource {
             didSelectName?(selectedName)
         }
         if tableView == newMessageView.chatTableView {
-            let selectedMessage = messageList[indexPath.row]
+            let selectedMessage = chatList[indexPath.row]
         }
     }
     

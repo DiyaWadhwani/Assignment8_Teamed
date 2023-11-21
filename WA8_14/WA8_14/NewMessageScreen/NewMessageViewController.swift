@@ -14,10 +14,11 @@ class NewMessageViewController: UIViewController {
     let newMessageView = NewMessageView()
     var userList: [User] = []
     var userNames = [String]()
-    var messageList: [(timeStamp: String, messageText: String)] = []
+    var chatList = [Chat]()
     let database = Firestore.firestore()
     var didSelectName: ((String) -> Void)?
     var currentUser: FirebaseAuth.User?
+    var lastDocumentSnapshot: DocumentSnapshot?
     
     override func loadView() {
         view = newMessageView
@@ -25,6 +26,7 @@ class NewMessageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         newMessageView.recipientDropDownTable.delegate = self
         newMessageView.recipientDropDownTable.dataSource = self
@@ -41,7 +43,6 @@ class NewMessageViewController: UIViewController {
         
         setupTapGestureRecognizer()
         fetchUsersFromFirebase()
-        
     }
     
     @objc func sendMessageToContact() {
@@ -50,7 +51,7 @@ class NewMessageViewController: UIViewController {
             if !uwMessage.isEmpty{
                 if let uwContact = newMessageView.recipientTextField.text {
                     if !uwContact.isEmpty {
-                        var chatUUID = sendChatToUser(uwContact, uwMessage)
+                        sendChatToUser(uwContact, uwMessage)
                         //load table view and clear the message text field
                         //loadChatsOnUserViewScreen(chatUUID)
                     }

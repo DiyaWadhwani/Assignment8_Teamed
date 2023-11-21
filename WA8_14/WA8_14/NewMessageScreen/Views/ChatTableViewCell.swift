@@ -16,6 +16,8 @@ class ChatTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        self.backgroundColor = .magenta
+        
         setupWrapperCellView()
         setupTimeLabel()
         setupMessageTextLabel()
@@ -26,20 +28,14 @@ class ChatTableViewCell: UITableViewCell {
     
     func setupWrapperCellView() {
         wrapperCellView = UITableViewCell()
-        wrapperCellView.backgroundColor = UIColor(red: 0.80, green: 0.93, blue: 0.99, alpha: 1.00)
-        wrapperCellView.layer.borderColor = UIColor.black.cgColor
+        wrapperCellView.layer.cornerRadius = 6.0
+        wrapperCellView.layer.shadowColor = UIColor.gray.cgColor
+        wrapperCellView.layer.shadowOffset = .zero
+        wrapperCellView.layer.shadowRadius = 4.0
+        wrapperCellView.layer.shadowOpacity = 0.4
         
         wrapperCellView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(wrapperCellView)
-    }
-    
-    func setupTimeLabel() {
-        timeLabel = UILabel()
-        timeLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        timeLabel.contentMode = .left
-        timeLabel.backgroundColor = .yellow
-        timeLabel.translatesAutoresizingMaskIntoConstraints = false
-        wrapperCellView.addSubview(timeLabel)
     }
     
     func setupMessageTextLabel() {
@@ -57,36 +53,61 @@ class ChatTableViewCell: UITableViewCell {
         wrapperCellView.addSubview(messageTextLabel)
     }
     
+    func setupTimeLabel() {
+        timeLabel = UILabel()
+        timeLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        timeLabel.contentMode = .left
+        timeLabel.backgroundColor = .yellow
+        
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        wrapperCellView.addSubview(timeLabel)
+    }
+    
     
     func initConstraints() {
+        
         NSLayoutConstraint.activate([
             
-            wrapperCellView.topAnchor.constraint(equalTo: self.topAnchor, constant: 50),
-            wrapperCellView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            wrapperCellView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-//            wrapperCellView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4),
-            
-            
+            wrapperCellView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
+            wrapperCellView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -10),
             
             timeLabel.topAnchor.constraint(equalTo: wrapperCellView.topAnchor, constant: 8),
             timeLabel.leadingAnchor.constraint(equalTo: wrapperCellView.leadingAnchor, constant: 10),
-            timeLabel.heightAnchor.constraint(equalToConstant: 10),
-            timeLabel.widthAnchor.constraint(equalTo: wrapperCellView.widthAnchor),
+            timeLabel.heightAnchor.constraint(equalToConstant: 15),
+            timeLabel.trailingAnchor.constraint(equalTo: wrapperCellView.trailingAnchor, constant: -10),
+            timeLabel.bottomAnchor.constraint(lessThanOrEqualTo: messageTextLabel.topAnchor, constant: -5),
             
             messageTextLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 5),
             messageTextLabel.leadingAnchor.constraint(equalTo: wrapperCellView.leadingAnchor, constant: 10),
-            messageTextLabel.heightAnchor.constraint(equalToConstant: 20),
-            messageTextLabel.widthAnchor.constraint(equalTo: wrapperCellView.widthAnchor),
+            messageTextLabel.trailingAnchor.constraint(equalTo: wrapperCellView.trailingAnchor, constant: -10),
+            messageTextLabel.bottomAnchor.constraint(equalTo: wrapperCellView.bottomAnchor, constant: -8),
             
-            wrapperCellView.heightAnchor.constraint(equalToConstant: 80),
-            
+            wrapperCellView.heightAnchor.constraint(greaterThanOrEqualTo: messageTextLabel.heightAnchor, constant: 8),
         ])
+    }
+    
+    func alignChats(with chat: Chat, isCurrentUser: Bool) {
+        
+        if isCurrentUser {
+            // Align to the right
+            wrapperCellView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor)
+            wrapperCellView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
+            wrapperCellView.backgroundColor = .green
+            
+        } else {
+            // Align to the left
+            wrapperCellView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
+            
+            wrapperCellView.backgroundColor = .blue
+        }
+        
+        // ... (your existing code)
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
@@ -94,6 +115,6 @@ class ChatTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-
+    
+    
 }

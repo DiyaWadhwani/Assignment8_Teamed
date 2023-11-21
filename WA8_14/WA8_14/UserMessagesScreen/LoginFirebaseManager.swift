@@ -30,15 +30,19 @@ extension ViewController {
                     return
                 }
                 
-                var chatUUIDList = [String]()
+//                var chatUUIDList = [String]()
+                var chatUserMap: [String: String] = [:]
                 
                 for document in documents {
                     //                    var chatUUID = document.documentID
-                    chatUUIDList.append(document.documentID)
+//                    chatUUIDList.append(document.documentID)
+                    let chatUUID = document.documentID
+                    let recipient = document["userNameInConversation"] as? String
+                    chatUserMap[chatUUID] = recipient
                     
                 }
                 
-                self.fetchLastMessages(for: chatUUIDList, from: chatCollection)
+                self.fetchLastMessages(for: chatUserMap, from: chatCollection)
             }
         }
         else {
@@ -46,26 +50,28 @@ extension ViewController {
         }
     }
     
-    func fetchLastMessages(for chatUUIDList: [String], from chatCollection: CollectionReference) {
+    func fetchLastMessages(for chatUserMap: [String: String], from chatCollection: CollectionReference) {
         
-        for chatUUID in chatUUIDList {
+        self.messageList.removeAll()
+        
+        for (chatUUID, recipient) in chatUserMap {
+            print("chatUUID -- \(chatUUID), recipient -- \(recipient)")
             let messagesCollection = chatCollection.document(chatUUID).collection("messages")
             
             // Query to get the last message
-            
-            messagesCollection.getDocuments { (querySnapshot, error) in
+            messagesCollection.getDocuments(completion: { (querySnapshot, error) in
                 if error == nil {
                     let messageCount = querySnapshot?.documents.count ?? 0
                     print("Message count for chat \(chatUUID): \(messageCount)")
-                    messagesCollection.document("message\(messageCount-1)").getDocument { (querySnapshot, error) in
+                    messagesCollection.document("message\(messageCount-1)").getDocument(completion: { (querySnapshot, error) in
                         if error == nil {
                             if let documentData = querySnapshot?.data(){
-                                if let messageText = documentData["message"] as? String,
-                                   let timestamp = documentData["timestamp"] as? String,
-                                   let recipient = documentData["recipient"] as? String {
+                                if let messageText = documentData["message"] as? String {
+//                                   let timestamp = documentData["timestamp"] as? String,
+//                                   let recipient = documentData["toUser"] as? String {
                                     print("message -- \(messageText)")
-                                    print("timestamp -- \(timestamp)")
-                                    var message = Message(senderName: recipient, messageText: messageText)
+//                                    print("timestamp -- \(timestamp)")
+                                    var message = Message(senderName: recipient, messageText: messageText, chatUUID: chatUUID)
                                     print("messageobject -- \(message)")
                                     self.messageList.append(message)
                                     print("messageList -- \(self.messageList)")
@@ -80,13 +86,13 @@ extension ViewController {
                         else{
                             print("Error fetching the last message document")
                         }
-                    }
+                    })
                     
                 }
                 else{
                     print("Error fetching message count for chat \(chatUUID): \(error?.localizedDescription.description)")
                 }
-            }
+            })
         }
     }
 }
