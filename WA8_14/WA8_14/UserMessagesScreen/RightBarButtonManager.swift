@@ -132,7 +132,7 @@ extension ViewController {
             }
             else {
                 print(error)
-                self.showErrorAlert(message: (error?.localizedDescription.description)!)
+                self.showErrorAlert(message: "Invalid Username or Password. Please try again")
             }
         })
     }
