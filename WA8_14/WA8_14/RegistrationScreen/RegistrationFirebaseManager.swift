@@ -12,16 +12,16 @@ import CryptoKit
 
 extension RegistrationViewController {
     
-    func registerNewAccount(_ user: User) {
+    func registerNewAccount(_ name: String, _ email: String, _ password: String) {
         
-        Auth.auth().createUser(withEmail: user.email, password: user.password, completion: { result, error in
+            Auth.auth().createUser(withEmail: email, password: password, completion: { result, error in
                 if error == nil {
                     self.currentUser = result?.user
                     print(self.currentUser!.displayName)
                     print(self.currentUser!.email)
                     let userID = self.currentUser!.uid
                     print("created user with ID: \(userID)")
-                    self.setUserNameInFirebaseAuth(name: user.name)
+                    self.setUserNameInFirebaseAuth(name: name)
                 }
                 else {
                     print(error)

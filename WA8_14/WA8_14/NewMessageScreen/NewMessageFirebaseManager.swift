@@ -58,7 +58,7 @@ extension NewMessageViewController {
         
         let chatCollection = database.collection("chats")
         
-        print("Current User -- \(self.currentUser)")
+        print("Current User -- \(self.currentUser!)")
         
         if let fromUser = self.currentUser {
             if let email1 = fromUser.email {
