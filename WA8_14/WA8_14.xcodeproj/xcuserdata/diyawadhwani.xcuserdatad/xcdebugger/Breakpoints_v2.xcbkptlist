@@ -3,4 +3,54 @@
    uuid = "A3213AD9-36A0-4CE0-AFB7-543DB6E2FF3C"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A7BD757D-913C-45AE-8845-2C888E3D844E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WA8_14/NewMessageScreen/NewMessageTableManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A7BD757D-913C-45AE-8845-2C888E3D844E - 5f8b29d206418418"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WA8_14.NewMessageViewController.tableView(_: __C.UITableView, cellForRowAt: Foundation.IndexPath) -&gt; __C.UITableViewCell"
+                  moduleName = "WA8_14"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/diyawadhwani/Desktop/Khoury/Sem1/CS5520-MobileAppDev/Assignments/Assignment8/WA8_14/WA8_14/NewMessageScreen/NewMessageTableManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "836">
+               </Location>
+               <Location
+                  uuid = "A7BD757D-913C-45AE-8845-2C888E3D844E - 5f8b29d206418418"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WA8_14.NewMessageViewController.tableView(_: __C.UITableView, cellForRowAt: Foundation.IndexPath) -&gt; __C.UITableViewCell"
+                  moduleName = "WA8_14"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/diyawadhwani/Desktop/Khoury/Sem1/CS5520-MobileAppDev/Assignments/Assignment8/WA8_14/WA8_14/NewMessageScreen/NewMessageTableManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "608">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

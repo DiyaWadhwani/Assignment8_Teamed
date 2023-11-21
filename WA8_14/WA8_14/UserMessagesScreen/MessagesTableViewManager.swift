@@ -24,12 +24,14 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         cell.messageTextLabel.text = messageList[indexPath.row].messageText
         print("cell message -- \(cell.messageTextLabel.text!)")
         print("chatUUID -- \(messageList[indexPath.row].chatUUID)")
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let newMessageController = NewMessageViewController()
         newMessageController.newMessageView.recipientTextField.text = messageList[indexPath.row].senderName
+        newMessageController.newMessageView.recipientTextField.font = .boldSystemFont(ofSize: 20)
         newMessageController.currentUser = self.currentUser!
         print("loading chat with uuid: \(messageList[indexPath.row].chatUUID)")
         newMessageController.loadChatsOnUserViewScreen(messageList[indexPath.row].chatUUID)

@@ -16,7 +16,7 @@ class ChatTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.backgroundColor = .magenta
+//        self.backgroundColor = .magenta
         
         setupWrapperCellView()
         setupTimeLabel()
@@ -28,6 +28,7 @@ class ChatTableViewCell: UITableViewCell {
     
     func setupWrapperCellView() {
         wrapperCellView = UITableViewCell()
+       
         wrapperCellView.layer.cornerRadius = 6.0
         wrapperCellView.layer.shadowColor = UIColor.gray.cgColor
         wrapperCellView.layer.shadowOffset = .zero
@@ -40,14 +41,11 @@ class ChatTableViewCell: UITableViewCell {
     
     func setupMessageTextLabel() {
         messageTextLabel = UILabel()
-        messageTextLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        messageTextLabel.contentMode = .left
-        messageTextLabel.backgroundColor = .green
-        
-        timeLabel.isHidden = false
-        messageTextLabel.isHidden = false
-        timeLabel.alpha = 1.0
-        messageTextLabel.alpha = 1.0
+        messageTextLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        messageTextLabel.numberOfLines = 0
+//        messageTextLabel.backgroundColor = .green
+        messageTextLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        messageTextLabel.setContentHuggingPriority(.required, for: .vertical)
         
         messageTextLabel.translatesAutoresizingMaskIntoConstraints = false
         wrapperCellView.addSubview(messageTextLabel)
@@ -55,9 +53,9 @@ class ChatTableViewCell: UITableViewCell {
     
     func setupTimeLabel() {
         timeLabel = UILabel()
-        timeLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        timeLabel.font = UIFont.boldSystemFont(ofSize: 12)
         timeLabel.contentMode = .left
-        timeLabel.backgroundColor = .yellow
+//        timeLabel.backgroundColor = .yellow
         
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         wrapperCellView.addSubview(timeLabel)
@@ -87,18 +85,20 @@ class ChatTableViewCell: UITableViewCell {
     }
     
     func alignChats(with chat: Chat, isCurrentUser: Bool) {
-        
         if isCurrentUser {
             // Align to the right
+            messageTextLabel.contentMode = .right
             wrapperCellView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor)
             wrapperCellView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
             wrapperCellView.backgroundColor = .green
             
         } else {
             // Align to the left
+            messageTextLabel.contentMode = .left
             wrapperCellView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
+            wrapperCellView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor)
             
-            wrapperCellView.backgroundColor = .blue
+            wrapperCellView.backgroundColor = .cyan
         }
         
         // ... (your existing code)

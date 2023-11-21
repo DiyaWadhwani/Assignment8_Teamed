@@ -43,6 +43,11 @@ extension NewMessageViewController {
     func sendChatToUser(_ toUsername: String, _ message: String){
         
         print("sending chat to user")
+        
+        self.newMessageView.recipientTextField.isEnabled = false
+        self.newMessageView.recipientDropDownTable.isHidden = true
+        self.newMessageView.messageTextView.text = ""
+        
         let currentDate = Date()
         
         let dateFormatter = DateFormatter()
@@ -151,9 +156,10 @@ extension NewMessageViewController {
                 print("Error adding 'chatRef' document: \(error.localizedDescription)")
             } else {
                 print("Added 'chatRef' document successfully.")
-                self.newMessageView.recipientTextField.isEnabled = false
-                self.newMessageView.recipientDropDownTable.isHidden = true
-                self.newMessageView.messageTextField.text = ""
+                
+                if self.chatList.isEmpty {
+                    self.loadChatsOnUserViewScreen(chatUUID)
+                }
             }
         }
     }
@@ -170,15 +176,17 @@ extension NewMessageViewController {
         
         var query = messageCollection.order(by: "timestamp", descending: false)
         
-        if let lastSnapshot = lastDocumentSnapshot {
-            query = query.start(afterDocument: lastSnapshot)
-        }
+//        if let lastSnapshot = lastDocumentSnapshot {
+//            query = query.start(afterDocument: lastSnapshot)
+//        }
         
         query.addSnapshotListener(includeMetadataChanges: false, listener: { (querySnapshot, error) in
             
             if error == nil {
                 if let querySnapshot = querySnapshot{
                     print("fetched documents in messagecollection")
+                    
+                    self.chatList.removeAll()
                     
                     for doc in querySnapshot.documents {
                         
@@ -193,7 +201,7 @@ extension NewMessageViewController {
                             
                             print("Message recieved -- \(chat)")
                             
-                            if self.chatList.firstIndex(where: { $0.timestamp == chat.timestamp && $0.message == chat.message && $0.toUser == chat.toUser && $0.fromUser == chat.fromUser }) == nil {
+                            if self.chatList.firstIndex(where: { $0.timestamp == chat.timestamp }) == nil {
                                 self.chatList.append(chat)
                                 hasNewMessage = true
                             }

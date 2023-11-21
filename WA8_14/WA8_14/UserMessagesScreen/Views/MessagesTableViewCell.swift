@@ -68,6 +68,7 @@ class MessagesTableViewCell: UITableViewCell {
             
             messageTextLabel.topAnchor.constraint(equalTo: senderNameLabel.bottomAnchor, constant: 2),
             messageTextLabel.leadingAnchor.constraint(equalTo: senderNameLabel.leadingAnchor),
+            messageTextLabel.trailingAnchor.constraint(equalTo: wrapperCellView.trailingAnchor),
             messageTextLabel.heightAnchor.constraint(equalToConstant: 16),
             messageTextLabel.widthAnchor.constraint(lessThanOrEqualTo: senderNameLabel.widthAnchor),
             

@@ -15,20 +15,20 @@ class NewMessageView: UIView {
     var contentWrapper: UIScrollView!
     var chatTableView: UITableView!
     var senderBar: UIView!
-    var messageTextField: UITextField!
+    var messageTextView: UITextView!
     var sendButton: UIButton!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .orange
+        self.backgroundColor = .white
         
         setupRecipientTextField()
         setupRecipientDropDownTable()
-//        setupContentWrapper()
+        //        setupContentWrapper()
         setupChatTableView()
         setupSenderBar()
-        setupMessageTextField()
+        setupMessageTextView()
         setupSendButton()
         
         initConstraints()
@@ -61,7 +61,6 @@ class NewMessageView: UIView {
     
     func setupChatTableView() {
         chatTableView = UITableView()
-        chatTableView.backgroundColor = .yellow
         chatTableView.register(ChatTableViewCell.self, forCellReuseIdentifier: Configs.tableViewChats)
         
         chatTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -75,17 +74,29 @@ class NewMessageView: UIView {
         self.addSubview(senderBar)
     }
     
-    func setupMessageTextField() {
-        messageTextField = UITextField()
-        messageTextField.placeholder = "Message"
-        messageTextField.borderStyle = .roundedRect
-        messageTextField.layer.borderWidth = 2
-        messageTextField.layer.borderColor = UIColor.lightGray.cgColor
-        messageTextField.isUserInteractionEnabled = true
-        messageTextField.isEnabled = true
+    func setupMessageTextView() {
+        messageTextView = UITextView()
+        messageTextView.font = .systemFont(ofSize: 15)
+        messageTextView.layer.borderWidth = 2
+        messageTextView.layer.borderColor = UIColor.lightGray.cgColor
         
-        messageTextField.translatesAutoresizingMaskIntoConstraints = false
-        senderBar.addSubview(messageTextField)
+        messageTextView.isUserInteractionEnabled = true
+        messageTextView.isSelectable = true
+        messageTextView.isEditable = true
+        
+        messageTextView.keyboardType = .default
+        messageTextView.returnKeyType = .done
+        messageTextView.autocapitalizationType = .sentences
+        messageTextView.dataDetectorTypes = .all
+        
+        messageTextView.autocorrectionType = UITextAutocorrectionType.yes
+        messageTextView.spellCheckingType = UITextSpellCheckingType.yes
+        
+        messageTextView.textContainer.lineBreakMode = .byWordWrapping
+        messageTextView.textContainer.maximumNumberOfLines = 0
+        
+        messageTextView.translatesAutoresizingMaskIntoConstraints = false
+        senderBar.addSubview(messageTextView)
     }
     
     func setupSendButton() {
@@ -112,29 +123,28 @@ class NewMessageView: UIView {
             recipientTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: -20),
             recipientTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             recipientTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-
+            
             chatTableView.topAnchor.constraint(equalTo: recipientTextField.bottomAnchor, constant: 10),
             chatTableView.bottomAnchor.constraint(equalTo: senderBar.topAnchor, constant: -8),
             chatTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             chatTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
-            senderBar.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -60),
+            senderBar.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
             senderBar.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             senderBar.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10),
             
-            messageTextField.topAnchor.constraint(equalTo: senderBar.topAnchor, constant: 5),
-            messageTextField.leadingAnchor.constraint(equalTo: senderBar.leadingAnchor),
-            messageTextField.trailingAnchor.constraint(lessThanOrEqualTo: senderBar.trailingAnchor),
+            messageTextView.topAnchor.constraint(equalTo: senderBar.topAnchor, constant: 5),
+            messageTextView.leadingAnchor.constraint(equalTo: senderBar.leadingAnchor, constant: 10),
+            messageTextView.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -10),
+            messageTextView.bottomAnchor.constraint(equalTo: senderBar.bottomAnchor, constant: -5),
             
             sendButton.topAnchor.constraint(equalTo: senderBar.topAnchor),
-            sendButton.leadingAnchor.constraint(lessThanOrEqualTo: messageTextField.trailingAnchor, constant: 10),
-            sendButton.trailingAnchor.constraint(equalTo: senderBar.trailingAnchor),
+            sendButton.trailingAnchor.constraint(equalTo: senderBar.trailingAnchor, constant: -10),
             sendButton.bottomAnchor.constraint(equalTo: senderBar.bottomAnchor),
             sendButton.heightAnchor.constraint(equalToConstant: 45),
             sendButton.widthAnchor.constraint(equalToConstant: 45),
             
         ])
-        
     }
     
     

@@ -39,7 +39,7 @@ class NewMessageViewController: UIViewController {
         
         newMessageView.chatTableView.delegate = self
         newMessageView.chatTableView.dataSource = self
-        newMessageView.chatTableView.isHidden = false
+        newMessageView.chatTableView.separatorStyle = .none
         
         setupTapGestureRecognizer()
         fetchUsersFromFirebase()
@@ -47,13 +47,12 @@ class NewMessageViewController: UIViewController {
     
     @objc func sendMessageToContact() {
         print("send button tapped")
-        if let uwMessage = newMessageView.messageTextField.text{
+        if let uwMessage = newMessageView.messageTextView.text{
             if !uwMessage.isEmpty{
                 if let uwContact = newMessageView.recipientTextField.text {
                     if !uwContact.isEmpty {
                         sendChatToUser(uwContact, uwMessage)
-                        //load table view and clear the message text field
-                        //loadChatsOnUserViewScreen(chatUUID)
+                        
                     }
                 }
             }
@@ -69,7 +68,7 @@ class NewMessageViewController: UIViewController {
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         // Hide the UIPickerView by resigning the first responder status
         newMessageView.recipientTextField.resignFirstResponder()
-        newMessageView.messageTextField.becomeFirstResponder()
+        newMessageView.messageTextView.becomeFirstResponder()
     }
     
     @objc func showDropDown() {

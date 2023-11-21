@@ -25,7 +25,9 @@ extension NewMessageViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         if tableView == newMessageView.recipientDropDownTable {
+
             print("trying to load table")
+            
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
             cell.textLabel?.text = userNames[indexPath.row]
             return cell
@@ -39,6 +41,7 @@ extension NewMessageViewController: UITableViewDelegate, UITableViewDataSource {
             cell.alignChats(with: chat, isCurrentUser: isCurrentUser)
             cell.timeLabel.text = chat.timestamp
             cell.messageTextLabel.text = chat.message
+            
             return cell
         }
         return UITableViewCell()
