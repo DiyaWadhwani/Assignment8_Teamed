@@ -23,7 +23,7 @@ extension NewMessageViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        print("YOOOOOOO")
+
         if tableView == newMessageView.recipientDropDownTable {
             print("trying to load table")
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
@@ -34,7 +34,8 @@ extension NewMessageViewController: UITableViewDelegate, UITableViewDataSource {
             print("trying to load table")
             let cell = tableView.dequeueReusableCell(withIdentifier: Configs.tableViewChats, for: indexPath) as! ChatTableViewCell
             let chat = chatList[indexPath.row]
-            let isCurrentUser = chat.fromUser == chatList[indexPath.row].fromUser // Replace with the actual user ID
+            let isCurrentUser = chat.fromUser == self.currentUser?.email // Replace with the actual user ID
+            print("IsCurrentUser -- \(isCurrentUser)")
             cell.alignChats(with: chat, isCurrentUser: isCurrentUser)
             cell.timeLabel.text = chat.timestamp
             cell.messageTextLabel.text = chat.message
