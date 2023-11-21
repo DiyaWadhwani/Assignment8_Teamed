@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 extension ViewController {
     
-    func fetchUserChatsAtLogin() {
+    func fetchUserMessagesAtLogin() {
         
         print("fetching user chats")
         self.messageList.removeAll()
@@ -30,19 +30,18 @@ extension ViewController {
                     return
                 }
                 
-//                var chatUUIDList = [String]()
                 var chatUserMap: [String: String] = [:]
                 
                 for document in documents {
-                    //                    var chatUUID = document.documentID
-//                    chatUUIDList.append(document.documentID)
+                    
                     let chatUUID = document.documentID
                     let recipient = document["userNameInConversation"] as? String
                     chatUserMap[chatUUID] = recipient
                     
                 }
                 
-                self.fetchLastMessages(for: chatUserMap, from: chatCollection)
+                //get latest chat of the conversation
+                self.fetchLastMessage(for: chatUserMap, from: chatCollection)
             }
         }
         else {
@@ -50,31 +49,31 @@ extension ViewController {
         }
     }
     
-    func fetchLastMessages(for chatUserMap: [String: String], from chatCollection: CollectionReference) {
+    func fetchLastMessage(for chatUserMap: [String: String], from chatCollection: CollectionReference) {
         
         self.messageList.removeAll()
         
         for (chatUUID, recipient) in chatUserMap {
-            print("chatUUID -- \(chatUUID), recipient -- \(recipient)")
+            
             let messagesCollection = chatCollection.document(chatUUID).collection("messages")
             
-            // Query to get the last message
+            //get latest message
             messagesCollection.getDocuments(completion: { (querySnapshot, error) in
+                
                 if error == nil {
+                    
                     let messageCount = querySnapshot?.documents.count ?? 0
-                    print("Message count for chat \(chatUUID): \(messageCount)")
+                    
+                    //fetching messageCount-1th message
                     messagesCollection.document("message\(messageCount-1)").getDocument(completion: { (querySnapshot, error) in
+                        
                         if error == nil {
                             if let documentData = querySnapshot?.data(){
+                                
                                 if let messageText = documentData["message"] as? String {
-//                                   let timestamp = documentData["timestamp"] as? String,
-//                                   let recipient = documentData["toUser"] as? String {
-                                    print("message -- \(messageText)")
-//                                    print("timestamp -- \(timestamp)")
                                     var message = Message(senderName: recipient, messageText: messageText, chatUUID: chatUUID)
-                                    print("messageobject -- \(message)")
+                                    
                                     self.messageList.append(message)
-                                    print("messageList -- \(self.messageList)")
                                     
                                     DispatchQueue.main.async {
                                         self.userMessageView.tableViewMessages.reloadData()
@@ -84,7 +83,7 @@ extension ViewController {
                             }
                         }
                         else{
-                            print("Error fetching the last message document")
+                            print("Error fetching the last message document: \(error?.localizedDescription.description)")
                         }
                     })
                     

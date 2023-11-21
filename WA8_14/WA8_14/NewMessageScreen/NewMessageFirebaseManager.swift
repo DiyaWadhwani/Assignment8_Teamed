@@ -12,30 +12,30 @@ import CryptoKit
 
 extension NewMessageViewController {
     
-    
     func fetchUsersFromFirebase() {
         print("all users")
-        //set list of names to userList
         
+        //set list of names to userList
         let userCollection = database.collection("users").getDocuments() { (querySnapshot, error) in
+            
             if error == nil {
+                
                 let users = querySnapshot?.documents.compactMap { document in
                     try? document.data(as: User.self)
                 } ?? []
-                //                print("All users fetched -- \(users)")
+                
+                //update userList
                 self.userList = users
                 
+                //remove logged in user from the list of contacts
                 if let currentUserDisplayName = self.currentUser?.displayName {
                     self.userList = self.userList.filter { $0.name != currentUserDisplayName }
                 }
                 
-                //                print("UserList after removing the logged in user -- \(self.userList)")
-                
+                //update contact names
                 for user in self.userList {
                     self.userNames.append(user.name)
                 }
-                print("List of names -- \(self.userNames)")
-                //                self.newMessageView.pickerView.reloadAllComponents()
             }
         }
     }
@@ -48,17 +48,16 @@ extension NewMessageViewController {
         self.newMessageView.recipientDropDownTable.isHidden = true
         self.newMessageView.messageTextView.text = ""
         
+        //used to create timestamp of message
         let currentDate = Date()
-        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
         let dateString = dateFormatter.string(from: currentDate)
         
+        //variable to store chatUUID after generation
         var chatUUID: String = ""
         
         let chatCollection = database.collection("chats")
-        
-        print("Current User -- \(self.currentUser!)")
         
         if let fromUser = self.currentUser {
             if let email1 = fromUser.email {
@@ -66,34 +65,45 @@ extension NewMessageViewController {
                     if toUsername == contact.name {
                         var email2 = contact.email
                         
+                        //generation of chatUUID for the 2 users in conversation
                         var emailList = [String]()
                         emailList.append(email1)
                         emailList.append(email2)
-                        
                         chatUUID = generateUUID(emailList)
                         
+                        //creating the chatObject to store chats
                         var chatObject = Chat(timestamp: dateString, message: message, toUser: email2, fromUser: email1)
                         
                         let messageCollection = chatCollection.document(chatUUID).collection("messages")
-                        var messageCollectionCount: Int = 0
+                        var messageCollectionCount = 0
+                        
                         messageCollection.getDocuments(completion: { (querySnapshot, error) in
+                            
                             if let error = error {
                                 print("Failed to fetch messageCollection documents: \(error.localizedDescription.description)")
                             }
                             else{
+                                
+                                //fetching number of messages
                                 messageCollectionCount = querySnapshot?.documents.count ?? 0
                                 print("No. of documents in messages collection: \(messageCollectionCount)")
                                 
+                                //creating new message/chat document
                                 let newMessageDocName = "message\(messageCollectionCount)"
+                                
                                 messageCollection.document(newMessageDocName).setData(chatObject.asDictionary) { error in
+                                    
                                     if let error = error {
                                         print("Failed to create new message document: \(error.localizedDescription.description)")
                                     }
                                     else {
-                                        print("New document added succesfully")
+                                        
+                                        //new document created
                                         var usersInConversation = [String]()
                                         usersInConversation.append(fromUser.displayName!)
                                         usersInConversation.append(toUsername)
+                                        
+                                        //updating users in conversation and adding chatUUID to specific user documents
                                         self.addChatReferenceIDToUsers(chatUUID, emailList, usersInConversation)
                                     }
                                 }
@@ -108,34 +118,56 @@ extension NewMessageViewController {
     func addChatReferenceIDToUsers(_ chatUUID: String, _ emails: [String], _ usersInConversation: [String]) {
         
         let userCollection = database.collection("users")
+        
+        //fetching documents of the 2 users in conversation
         var user1Collection = userCollection.document(emails[0])
         var user2Collection = userCollection.document(emails[1])
         
+        //user1 document
         user1Collection.getDocument{ (user1DocSnapshot, error) in
+            
             if let error = error {
                 print("Error fetching user1 document: \(error.localizedDescription)")
             } else {
+                
                 if let user1Data = user1DocSnapshot?.data(),
+                   
+                    //creating chat collection in user document
                    let chatsCollection1 = user1Data["chats"] as? [String: Any],
+                   
+                    //creation of document in chat collection of user if does not exist
                    let chatRefDocument1 = chatsCollection1["chatRef"] as? [String: Any] {
-                    print("User1 has the 'chats' collection with 'chatRef' document.")
+                    
+                    //chatRef document exists
+                    
                 } else {
-                    print("User1 does not have the 'chats' collection with 'chatRef' document.")
+                    
+                    //creating chatRef document
                     self.addChatRefDocument(to: user1Collection.collection("chats"), chatUUID, emails[1], usersInConversation[1])
                 }
             }
         }
         
+        //user2 document
         user2Collection.getDocument{ (user2DocSnapshot, error) in
+            
             if let error = error {
                 print("Error fetching user2 document: \(error.localizedDescription)")
             } else {
+                
                 if let user2Data = user2DocSnapshot?.data(),
+                   
+                    //creating chat collection in user document
                    let chatsCollection2 = user2Data["chats"] as? [String: Any],
+                   
+                    //creation of document in chat collection of user if does not exist
                    let chatRefDocument2 = chatsCollection2["chatRef"] as? [String: Any] {
-                    print("User2 has the 'chats' collection with 'chatRef' document.")
+                    
+                    //chatRef document exists
+                    
                 } else {
-                    print("User2 does not have the 'chats' collection with 'chatRef' document.")
+                    
+                    //creating chatRef document
                     self.addChatRefDocument(to: user2Collection.collection("chats"), chatUUID, emails[0], usersInConversation[0])
                 }
             }
@@ -143,13 +175,14 @@ extension NewMessageViewController {
     }
     
     func addChatRefDocument(to chatCollection: CollectionReference, _ chatUUID: String, _ email: String, _ userName: String) {
+        
+        //data in chatRef document
         let chatRefDocumentData = [
-            // Add any fields you want in the "chatRef" document
             "userNameInConversation": userName,
             "userEmailInConversation": email
         ]
         
-        // Add the "chatRef" document to the "chats" collection
+        //adding chatRef document to user specific chatCollection
         let newDocument = chatCollection.document(chatUUID)
         newDocument.setData(chatRefDocumentData) { error in
             if let error = error {
@@ -157,6 +190,7 @@ extension NewMessageViewController {
             } else {
                 print("Added 'chatRef' document successfully.")
                 
+                //message sent to a user for the first time
                 if self.chatList.isEmpty {
                     self.loadChatsOnUserViewScreen(chatUUID)
                 }
@@ -166,9 +200,7 @@ extension NewMessageViewController {
     
     func loadChatsOnUserViewScreen(_ chatUUID: String) {
         
-        
-        print("CurrentChatList -- \(self.chatList)")
-        
+        //variable to detect any new messages
         var hasNewMessage = false
         
         let chatsCollection = database.collection("chats")
@@ -176,57 +208,52 @@ extension NewMessageViewController {
         
         var query = messageCollection.order(by: "timestamp", descending: false)
         
-//        if let lastSnapshot = lastDocumentSnapshot {
-//            query = query.start(afterDocument: lastSnapshot)
-//        }
-        
         query.addSnapshotListener(includeMetadataChanges: false, listener: { (querySnapshot, error) in
             
             if error == nil {
+                
                 if let querySnapshot = querySnapshot{
                     print("fetched documents in messagecollection")
                     
+                    //clearing chatList to fetch all chats
                     self.chatList.removeAll()
                     
                     for doc in querySnapshot.documents {
                         
                         let data = doc.data()
-                        print("data in doc -- \(data)")
+                        
+                        //fetching chat data
                         if let timestamp = data["timestamp"] as? String,
                            let messageText = data["message"] as? String,
                            let fromUser = data["fromUser"] as? String,
                            let toUser = data["toUser"] as? String {
                             
+                            //creating chatObject
                             let chat = Chat(timestamp: timestamp, message: messageText, toUser: toUser, fromUser: fromUser)
                             
-                            print("Message recieved -- \(chat)")
-                            
+                            //checking if chatObject exists in the list
                             if self.chatList.firstIndex(where: { $0.timestamp == chat.timestamp }) == nil {
+                                
+                                //chatObject is new and needs to be added in the chatList
                                 self.chatList.append(chat)
                                 hasNewMessage = true
                             }
-                            
-                            //                            print("CurrentChatList -- \(self.chatList)")
                         }
                         else{
                             print("Failed to fetch data from doc")
                         }
-                        
-                        //                    dispatchGroup.leave()
-                        //                    processedDocs += 1
                     }
                     
+                    //fetching latest document created
                     if let lastDocument = querySnapshot.documents.last {
                         self.lastDocumentSnapshot = lastDocument
                     }
                     
+                    //reloading chatTableView if a new message has been detected and scrolling to the bottom
                     if hasNewMessage {
-                        //                dispatchGroup.notify(queue: .main){
                         DispatchQueue.main.async {
-                            //                    self.newMessageView.layoutIfNeeded()
-                            //                        self.newMessageView.chatTableView.reloadData()
                             
-                            print("All documents processed. Reloading table view now")
+                            //all documents loaded
                             self.newMessageView.chatTableView.reloadData()
                             self.scrollToBottomChat()
                         }
@@ -235,11 +262,11 @@ extension NewMessageViewController {
                 else {
                     print("Failed to fetch messages")
                 }
-                print("MessageList after adding a message -- \(self.chatList)")
             }
         })
     }
     
+    //provided code from assignment to scrollToLastChat
     func scrollToBottomChat() {
         let numberOfSections = newMessageView.chatTableView.numberOfSections
         let numberOfRows = newMessageView.chatTableView.numberOfRows(inSection: numberOfSections - 1)
@@ -250,6 +277,7 @@ extension NewMessageViewController {
         }
     }
     
+    //generating chatUUID to create a chat reference for each user
     func generateUUID(_ emailList:[String]) -> String{
         print("generating UUID")
         let sortedEmails = emailList.sorted()

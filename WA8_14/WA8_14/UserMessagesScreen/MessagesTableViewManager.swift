@@ -11,7 +11,7 @@ import UIKit
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("messageList count -- \(messageList.count)")
+        print("Number of messages -- \(messageList.count)")
         return messageList.count
     }
     
@@ -19,20 +19,23 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Configs.tableViewMessages, for: indexPath) as! MessagesTableViewCell
         
+        //setting cell properties
         cell.senderNameLabel.text = messageList[indexPath.row].senderName
-        print("cell senderName -- \(cell.senderNameLabel.text!)")
         cell.messageTextLabel.text = messageList[indexPath.row].messageText
-        print("cell message -- \(cell.messageTextLabel.text!)")
-        print("chatUUID -- \(messageList[indexPath.row].chatUUID)")
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         let newMessageController = NewMessageViewController()
+        
         newMessageController.newMessageView.recipientTextField.text = messageList[indexPath.row].senderName
         newMessageController.newMessageView.recipientTextField.font = .boldSystemFont(ofSize: 20)
+        
         newMessageController.currentUser = self.currentUser!
+        
+        //loading chats for selected message
         print("loading chat with uuid: \(messageList[indexPath.row].chatUUID)")
         newMessageController.loadChatsOnUserViewScreen(messageList[indexPath.row].chatUUID)
         navigationController?.pushViewController(newMessageController, animated: true)

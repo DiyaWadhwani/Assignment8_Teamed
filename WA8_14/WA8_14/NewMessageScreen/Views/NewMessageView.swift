@@ -25,7 +25,6 @@ class NewMessageView: UIView {
         
         setupRecipientTextField()
         setupRecipientDropDownTable()
-        //        setupContentWrapper()
         setupChatTableView()
         setupSenderBar()
         setupMessageTextView()
@@ -51,6 +50,7 @@ class NewMessageView: UIView {
     }
     
     func setupRecipientDropDownTable() {
+        
         recipientDropDownTable = UITableView()
         recipientDropDownTable.isHidden = true
         recipientDropDownTable.layer.zPosition = 1
@@ -60,6 +60,7 @@ class NewMessageView: UIView {
     }
     
     func setupChatTableView() {
+        
         chatTableView = UITableView()
         chatTableView.register(ChatTableViewCell.self, forCellReuseIdentifier: Configs.tableViewChats)
         
@@ -68,6 +69,7 @@ class NewMessageView: UIView {
     }
     
     func setupSenderBar() {
+        
         senderBar = UIView()
         
         senderBar.translatesAutoresizingMaskIntoConstraints = false
@@ -75,6 +77,7 @@ class NewMessageView: UIView {
     }
     
     func setupMessageTextView() {
+        
         messageTextView = UITextView()
         messageTextView.font = .systemFont(ofSize: 15)
         messageTextView.layer.borderWidth = 2
@@ -100,6 +103,7 @@ class NewMessageView: UIView {
     }
     
     func setupSendButton() {
+        
         sendButton = UIButton(type: .system)
         sendButton.setImage(UIImage(systemName: "paperplane.circle.fill")?.withRenderingMode(.alwaysOriginal), for: .normal)
         sendButton.setTitle("", for: .normal)
@@ -118,6 +122,7 @@ class NewMessageView: UIView {
     
     func initConstraints() {
         
+        //view constraints
         NSLayoutConstraint.activate([
             
             recipientTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: -20),

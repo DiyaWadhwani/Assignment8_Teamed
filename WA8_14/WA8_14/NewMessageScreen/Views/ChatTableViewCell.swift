@@ -16,8 +16,6 @@ class ChatTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-//        self.backgroundColor = .magenta
-        
         setupWrapperCellView()
         setupTimeLabel()
         setupMessageTextLabel()
@@ -27,8 +25,8 @@ class ChatTableViewCell: UITableViewCell {
     }
     
     func setupWrapperCellView() {
+        
         wrapperCellView = UITableViewCell()
-       
         wrapperCellView.layer.cornerRadius = 6.0
         wrapperCellView.layer.shadowColor = UIColor.gray.cgColor
         wrapperCellView.layer.shadowOffset = .zero
@@ -40,10 +38,10 @@ class ChatTableViewCell: UITableViewCell {
     }
     
     func setupMessageTextLabel() {
+        
         messageTextLabel = UILabel()
         messageTextLabel.font = UIFont.boldSystemFont(ofSize: 14)
         messageTextLabel.numberOfLines = 0
-//        messageTextLabel.backgroundColor = .green
         messageTextLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         messageTextLabel.setContentHuggingPriority(.required, for: .vertical)
         
@@ -52,10 +50,9 @@ class ChatTableViewCell: UITableViewCell {
     }
     
     func setupTimeLabel() {
+        
         timeLabel = UILabel()
         timeLabel.font = UIFont.boldSystemFont(ofSize: 12)
-        timeLabel.contentMode = .left
-//        timeLabel.backgroundColor = .yellow
         
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         wrapperCellView.addSubview(timeLabel)
@@ -64,6 +61,7 @@ class ChatTableViewCell: UITableViewCell {
     
     func initConstraints() {
         
+        //view constraints
         NSLayoutConstraint.activate([
             
             wrapperCellView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
@@ -85,23 +83,30 @@ class ChatTableViewCell: UITableViewCell {
     }
     
     func alignChats(with chat: Chat, isCurrentUser: Bool) {
+        
+        //matching user chats to the logged in user
         if isCurrentUser {
-            // Align to the right
+            
+            //align chats to right
             messageTextLabel.contentMode = .right
+            timeLabel.contentMode = .right
             wrapperCellView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor)
             wrapperCellView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
+            
+            //outgoing messages
             wrapperCellView.backgroundColor = .green
             
         } else {
-            // Align to the left
+            
+            //align chats to left
             messageTextLabel.contentMode = .left
+            timeLabel.contentMode = .left
             wrapperCellView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
             wrapperCellView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor)
             
+            //incoming messages
             wrapperCellView.backgroundColor = .cyan
         }
-        
-        // ... (your existing code)
     }
     
     override func awakeFromNib() {

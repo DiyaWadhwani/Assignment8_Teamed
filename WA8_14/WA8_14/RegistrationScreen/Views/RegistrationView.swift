@@ -20,7 +20,7 @@ class RegistrationView: UIView {
     var reenterPasswordLabel: UILabel!
     var reenterPasswordTextField: UITextField!
     var createProfileButton: UIButton!
-
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,7 +37,7 @@ class RegistrationView: UIView {
         setupReenterPasswordLabel()
         setupReenterPasswordTextField()
         setupCreateProfileButton()
-
+        
         initConstraints()
     }
     
@@ -52,6 +52,7 @@ class RegistrationView: UIView {
     }
     
     func setupNameLabel() {
+        
         nameLabel = UILabel()
         nameLabel.text = "Name:"
         nameLabel.font = .boldSystemFont(ofSize: 17)
@@ -59,7 +60,7 @@ class RegistrationView: UIView {
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(nameLabel)
     }
-
+    
     func setupNameTextField() {
         
         nameTextField = UITextField()
@@ -71,6 +72,7 @@ class RegistrationView: UIView {
     }
     
     func setupEmailLabel() {
+        
         emailLabel = UILabel()
         emailLabel.text = "Email:"
         emailLabel.font = .boldSystemFont(ofSize: 17)
@@ -78,8 +80,9 @@ class RegistrationView: UIView {
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(emailLabel)
     }
-
+    
     func setupEmailTextField() {
+        
         emailTextField = UITextField()
         emailTextField.placeholder = "Enter your email"
         emailTextField.borderStyle = .roundedRect
@@ -89,6 +92,7 @@ class RegistrationView: UIView {
     }
     
     func setupPasswordLabel() {
+        
         passwordLabel = UILabel()
         passwordLabel.text = "Password:"
         passwordLabel.font = .boldSystemFont(ofSize: 17)
@@ -96,8 +100,9 @@ class RegistrationView: UIView {
         passwordLabel.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(passwordLabel)
     }
-
+    
     func setupPasswordTextField() {
+        
         passwordTextField = UITextField()
         passwordTextField.placeholder = "Enter your password"
         passwordTextField.borderStyle = .roundedRect
@@ -108,6 +113,7 @@ class RegistrationView: UIView {
     }
     
     func setupReenterPasswordLabel() {
+        
         reenterPasswordLabel = UILabel()
         reenterPasswordLabel.text = "Confirm Password:"
         reenterPasswordLabel.font = .boldSystemFont(ofSize: 17)
@@ -117,6 +123,7 @@ class RegistrationView: UIView {
     }
     
     func setupReenterPasswordTextField() {
+        
         reenterPasswordTextField = UITextField()
         reenterPasswordTextField.placeholder = "Re-enter your password"
         reenterPasswordTextField.borderStyle = .roundedRect
@@ -125,7 +132,7 @@ class RegistrationView: UIView {
         reenterPasswordTextField.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(reenterPasswordTextField)
     }
-
+    
     func setupCreateProfileButton() {
         
         createProfileButton = UIButton(type: .system)
@@ -138,8 +145,10 @@ class RegistrationView: UIView {
         createProfileButton.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(createProfileButton)
     }
-
+    
     func initConstraints() {
+        
+        //view constraints
         NSLayoutConstraint.activate([
             
             titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50),
@@ -154,32 +163,32 @@ class RegistrationView: UIView {
             
             emailLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 30),
             emailLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-
+            
             emailTextField.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 10),
             emailTextField.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor, constant: 10),
             emailTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             
             passwordLabel.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 30),
             passwordLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-
+            
             passwordTextField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 15),
             passwordTextField.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor, constant: 10),
             passwordTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             
             reenterPasswordLabel.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 30),
             reenterPasswordLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-
+            
             reenterPasswordTextField.topAnchor.constraint(equalTo: reenterPasswordLabel.bottomAnchor, constant: 15),
             reenterPasswordTextField.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor, constant: 10),
             reenterPasswordTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-
+            
             createProfileButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -80),
             createProfileButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             createProfileButton.widthAnchor.constraint(equalToConstant: 150),
             createProfileButton.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

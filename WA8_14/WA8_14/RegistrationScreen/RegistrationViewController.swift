@@ -28,11 +28,10 @@ class RegistrationViewController: UIViewController {
         
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        registerView.createProfileButton.addTarget(self, action: #selector(attemptUserRegistration), for: .touchUpInside)
-        
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonTapped))
         
-        //        registerView.registerButton.addTarget(self, action: #selector(attemptUserRegistration), for: .touchUpInside)
+        //button-click for profile creation
+        registerView.createProfileButton.addTarget(self, action: #selector(attemptUserRegistration), for: .touchUpInside)
         
     }
     
@@ -43,6 +42,7 @@ class RegistrationViewController: UIViewController {
         let passwordInput = registerView.passwordTextField.text
         let reenteredPasswordInput = registerView.reenterPasswordTextField.text
         
+        //validate text inputs of user
         if let uwName = nameInput {
             if !uwName.isEmpty {
                 if let uwEmail = emailInput {
@@ -84,6 +84,7 @@ class RegistrationViewController: UIViewController {
         }
     }
     
+    //email validation
     func validateEmail(_ email:String) -> Bool {
         
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
@@ -91,6 +92,7 @@ class RegistrationViewController: UIViewController {
         return emailPred.evaluate(with: email)
     }
     
+    //password confirmation
     func validatePassword(_ password1:String, _ password2:String) -> Bool {
         if(password2==password1){
             return true

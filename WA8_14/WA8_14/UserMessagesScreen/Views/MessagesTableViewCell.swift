@@ -24,6 +24,7 @@ class MessagesTableViewCell: UITableViewCell {
     }
     
     func setupWrapperCellView() {
+        
         wrapperCellView = UIView()
         wrapperCellView.backgroundColor = .white
         wrapperCellView.layer.cornerRadius = 6.0
@@ -37,6 +38,7 @@ class MessagesTableViewCell: UITableViewCell {
     }
     
     func setupSenderNameLabel() {
+        
         senderNameLabel = UILabel()
         senderNameLabel.font = .boldSystemFont(ofSize: 20)
         
@@ -45,6 +47,7 @@ class MessagesTableViewCell: UITableViewCell {
     }
     
     func setupMessageTextLabel() {
+        
         messageTextLabel = UILabel()
         messageTextLabel.font = .boldSystemFont(ofSize: 14)
         
@@ -54,6 +57,7 @@ class MessagesTableViewCell: UITableViewCell {
     
     func initConstraints() {
         
+        //view constraints
         NSLayoutConstraint.activate([
             
             wrapperCellView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
@@ -73,24 +77,21 @@ class MessagesTableViewCell: UITableViewCell {
             messageTextLabel.widthAnchor.constraint(lessThanOrEqualTo: senderNameLabel.widthAnchor),
             
             wrapperCellView.heightAnchor.constraint(equalToConstant: 75),
-        
+            
         ])
         
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
 }

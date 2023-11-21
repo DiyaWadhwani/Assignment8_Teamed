@@ -28,6 +28,7 @@ class UserMessagesView: UIView {
     }
     
     func setupMessageIcon() {
+        
         messageIcon = UIImageView()
         messageIcon.image = UIImage(systemName: "tray.circle")?.withRenderingMode(.alwaysOriginal)
         messageIcon.tintColor = .black
@@ -40,6 +41,7 @@ class UserMessagesView: UIView {
     }
     
     func setupMessageLabel() {
+        
         messageLabel = UILabel()
         messageLabel.text = "Your inbox"
         messageLabel.font = .boldSystemFont(ofSize: 14)
@@ -49,6 +51,7 @@ class UserMessagesView: UIView {
     }
     
     func setupNewMessageFloatingButton() {
+        
         newMessageFloatingButton = UIButton(type: .system)
         newMessageFloatingButton.setTitle("", for: .normal)
         newMessageFloatingButton.setImage(UIImage(systemName: "plus.message.fill")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -67,6 +70,7 @@ class UserMessagesView: UIView {
     }
     
     func setupTableViewMessages() {
+        
         tableViewMessages = UITableView()
         
         tableViewMessages.translatesAutoresizingMaskIntoConstraints = false
@@ -75,6 +79,7 @@ class UserMessagesView: UIView {
     
     func initConstraints() {
         
+        //view constraints
         NSLayoutConstraint.activate([
             
             messageIcon.heightAnchor.constraint(equalToConstant: 32),
@@ -95,7 +100,7 @@ class UserMessagesView: UIView {
             newMessageFloatingButton.heightAnchor.constraint(equalToConstant: 55),
             newMessageFloatingButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             newMessageFloatingButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -30),
-        
+            
         ])
     }
     

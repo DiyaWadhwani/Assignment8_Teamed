@@ -7,6 +7,7 @@
 
 import Foundation
 
+//data model to load list of messages for a user
 struct Message: Codable {
     
     var senderName: String

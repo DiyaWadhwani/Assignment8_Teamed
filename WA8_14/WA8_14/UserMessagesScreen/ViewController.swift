@@ -27,9 +27,10 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
         
         handleAuth = Auth.auth().addStateDidChangeListener{ auth, user in
+            
             if user == nil {
-                //not signed in
-                print("user not signed in")
+                
+                //user not signed in functionality
                 self.currentUser = nil
                 self.userMessageView.messageLabel.text = "Please sign in to view your inbox"
                 
@@ -39,32 +40,14 @@ class ViewController: UIViewController {
                 self.setupRightBarButton(isLoggedIn: false)
             }
             else {
-                //signed in
-                print("user signed in")
+                
+                //user signed in functionality
                 self.currentUser = user
-                self.fetchUserChatsAtLogin()
+                self.fetchUserMessagesAtLogin()
                 self.userMessageView.messageLabel.text = "Welcome \(user?.displayName ?? "Anonymous")!"
                 self.userMessageView.newMessageFloatingButton.isEnabled = true
                 self.userMessageView.newMessageFloatingButton.isHidden = false
                 self.setupRightBarButton(isLoggedIn: true)
-                
-                //loadContacts
-                //                self.database.collection("users").document((self.currentUser?.email)!).collection("contacts").addSnapshotListener(includeMetadataChanges: false, listener: { querySnapshot, error in
-                //                    if let documents = querySnapshot?.documents {
-                //                        self.contactList.removeAll()
-                //                        for document in documents {
-                //                            do {
-                //                                let contact = try document.data(as: Contact.self)
-                //                                self.contactList.append(contact)
-                //                            }
-                //                            catch{
-                //                                print(error)
-                //                            }
-                //                        }
-                //                    }
-                //                    self.contactList.sort(by: {$0.name < $1.name})
-                //                    self.homePage.tableViewContacts.reloadData()
-                //                })
             }
         }
     }
@@ -78,11 +61,13 @@ class ViewController: UIViewController {
         
         view.bringSubviewToFront(userMessageView.newMessageFloatingButton)
         
+        //table view properties
         userMessageView.tableViewMessages.delegate = self
         userMessageView.tableViewMessages.dataSource = self
         userMessageView.tableViewMessages.separatorStyle = .none
         userMessageView.tableViewMessages.register(MessagesTableViewCell.self, forCellReuseIdentifier: Configs.tableViewMessages)
         
+        //button-click for new message
         userMessageView.newMessageFloatingButton.addTarget(self, action: #selector(createNewMessage), for: .touchUpInside)
         
     }
@@ -94,10 +79,12 @@ class ViewController: UIViewController {
     }
     
     @objc func createNewMessage() {
-            print("user is creating a new message")
-            let newMessageController = NewMessageViewController()
-            newMessageController.currentUser = self.currentUser!
-            navigationController?.pushViewController(newMessageController, animated: true)
+        
+        print("user is creating a new message")
+        
+        let newMessageController = NewMessageViewController()
+        newMessageController.currentUser = self.currentUser!
+        navigationController?.pushViewController(newMessageController, animated: true)
     }
     
     

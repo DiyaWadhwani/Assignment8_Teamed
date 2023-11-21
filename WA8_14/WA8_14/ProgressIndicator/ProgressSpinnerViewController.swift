@@ -7,6 +7,7 @@
 
 import UIKit
 
+//loading symbol
 class ProgressSpinnerViewController: UIViewController {
     
     var activityIndicator: UIActivityIndicatorView!
