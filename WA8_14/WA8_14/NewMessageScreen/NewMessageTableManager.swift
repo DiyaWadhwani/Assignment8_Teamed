@@ -19,7 +19,6 @@ extension NewMessageViewController: UITableViewDelegate, UITableViewDataSource {
             return userNames.count
         }
         else if tableView == newMessageView.chatTableView {
-            print("ChatCount = \(chatList.count)")
             return chatList.count
         }
         return 0

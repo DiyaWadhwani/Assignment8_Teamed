@@ -31,7 +31,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let newMessageController = NewMessageViewController()
         
         newMessageController.newMessageView.recipientTextField.text = messageList[indexPath.row].senderName
-        newMessageController.newMessageView.recipientTextField.font = .boldSystemFont(ofSize: 20)
+        newMessageController.newMessageView.recipientTextField.font = .boldSystemFont(ofSize: 25)
+        newMessageController.newMessageView.recipientTextField.layer.borderWidth = 0
         
         newMessageController.currentUser = self.currentUser!
         

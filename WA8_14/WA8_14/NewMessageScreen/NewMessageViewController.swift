@@ -44,6 +44,9 @@ class NewMessageViewController: UIViewController {
         
         newMessageView.chatTableView.separatorStyle = .none
         
+        //delegate property for textView
+        newMessageView.messageTextView.delegate = self
+        
         //close the user table on tapping outside the screen
         setupTapGestureRecognizer()
         
@@ -55,7 +58,7 @@ class NewMessageViewController: UIViewController {
         print("send button tapped")
         
         if let uwMessage = newMessageView.messageTextView.text{
-            if !uwMessage.isEmpty{
+            if uwMessage != ""{
                 if let uwContact = newMessageView.recipientTextField.text {
                     if !uwContact.isEmpty {
                         
@@ -63,7 +66,17 @@ class NewMessageViewController: UIViewController {
                     }
                 }
             }
+            else {
+                showErrorAlert(message: "Please enter some text")
+            }
         }
+    }
+    
+    func showErrorAlert(message: String) {
+        
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        self.present(alert, animated: true)
     }
     
     func setupTapGestureRecognizer() {
@@ -86,3 +99,14 @@ class NewMessageViewController: UIViewController {
     }
 }
 
+extension NewMessageViewController: UITextViewDelegate {
+    
+    //placeholder visibility based on user input
+    func textViewDidChange(_ textView: UITextView) {
+        
+        //checking for whitespaces since textView does not have .isEmpty property
+        let isTextViewEmpty = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        newMessageView.messagePlaceholderLabel.isHidden = !isTextViewEmpty
+    }
+    
+}

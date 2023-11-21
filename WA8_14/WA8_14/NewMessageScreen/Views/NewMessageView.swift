@@ -12,10 +12,12 @@ class NewMessageView: UIView {
     var recipientTextField: UITextField!
     var pickerView: UIPickerView!
     var recipientDropDownTable: UITableView!
-    var contentWrapper: UIScrollView!
+    
     var chatTableView: UITableView!
+    
     var senderBar: UIView!
     var messageTextView: UITextView!
+    var messagePlaceholderLabel: UILabel!
     var sendButton: UIButton!
     
     override init(frame: CGRect) {
@@ -28,6 +30,7 @@ class NewMessageView: UIView {
         setupChatTableView()
         setupSenderBar()
         setupMessageTextView()
+        setupMessagePlaceholderLabel()
         setupSendButton()
         
         initConstraints()
@@ -81,6 +84,7 @@ class NewMessageView: UIView {
         messageTextView = UITextView()
         messageTextView.font = .systemFont(ofSize: 15)
         messageTextView.layer.borderWidth = 2
+        messageTextView.layer.cornerRadius = 5
         messageTextView.layer.borderColor = UIColor.lightGray.cgColor
         
         messageTextView.isUserInteractionEnabled = true
@@ -100,6 +104,16 @@ class NewMessageView: UIView {
         
         messageTextView.translatesAutoresizingMaskIntoConstraints = false
         senderBar.addSubview(messageTextView)
+    }
+    
+    func setupMessagePlaceholderLabel() {
+        
+        messagePlaceholderLabel = UILabel()
+        messagePlaceholderLabel.text = "Enter your text here"
+        messagePlaceholderLabel.textColor = UIColor.lightGray
+        
+        messagePlaceholderLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageTextView.addSubview(messagePlaceholderLabel)
     }
     
     func setupSendButton() {
@@ -143,11 +157,16 @@ class NewMessageView: UIView {
             messageTextView.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -10),
             messageTextView.bottomAnchor.constraint(equalTo: senderBar.bottomAnchor, constant: -5),
             
+            messagePlaceholderLabel.topAnchor.constraint(equalTo: messageTextView.topAnchor, constant: 8),
+            messagePlaceholderLabel.leadingAnchor.constraint(equalTo: messageTextView.leadingAnchor, constant: 5),
+            
             sendButton.topAnchor.constraint(equalTo: senderBar.topAnchor),
-            sendButton.trailingAnchor.constraint(equalTo: senderBar.trailingAnchor, constant: -10),
+            sendButton.trailingAnchor.constraint(equalTo: senderBar.trailingAnchor),
             sendButton.bottomAnchor.constraint(equalTo: senderBar.bottomAnchor),
-            sendButton.heightAnchor.constraint(equalToConstant: 45),
-            sendButton.widthAnchor.constraint(equalToConstant: 45),
+            sendButton.heightAnchor.constraint(equalToConstant: 50),
+            sendButton.widthAnchor.constraint(equalToConstant: 50),
+            
+            senderBar.heightAnchor.constraint(equalToConstant: 70),
             
         ])
     }
